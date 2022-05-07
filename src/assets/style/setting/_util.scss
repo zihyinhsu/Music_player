@@ -1,0 +1,90 @@
+.albumImg{
+  height: 60px;
+  width: 60px;
+}
+.cd{
+  animation: rounded 5s infinite linear;
+}
+
+@keyframes rounded{
+    0%{
+    transform:rotate(0deg);
+    }
+    100%{
+    transform: rotate(-360deg);
+    }
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.flex-grow-1{
+  flex-grow:1;
+}
+
+.fs-small{
+  font-size:12px;
+}
+
+iframe{
+  width: 0px;
+  height: 0px;
+}
+
+.music-bar{
+  cursor: pointer;
+  height: 5px;
+  width: 100%;
+  .length{
+    border-radius:10px;
+    width: 90%;
+    background: white;
+    height: 100%;
+    transition: width linear 200ms;
+    position:relative;
+    overflow: hidden;
+  }
+  .currentTimeBar{
+    width: 0;
+    height: 100%;
+    background: $primary;
+  }
+}
+
+.volume {
+  cursor: pointer;
+  -webkit-appearance: none;
+  border-radius: 10px;
+  background: linear-gradient($primary, $primary) no-repeat;
+  background-color: $greyLight;
+  background-size: 50%;
+  &::-webkit-slider-runnable-track {
+    height: 5px;
+  }
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    margin-top: -5px;
+    background-color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+  }
+}
+
+.object-fit-cover{
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.musicPlaying {
+  background: $light !important;
+}
+
+// breakpoint
+@include media-breakpoint-up(md) {
+  
+}
+

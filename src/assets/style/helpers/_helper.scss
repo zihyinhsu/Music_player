@@ -1,0 +1,26 @@
+//center
+.center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+//logo
+.logo {
+  display:block; /*使a成為區塊元素可以長寬高*/
+  // background-image: url('../images/logo.png') no-repeat; /*設定要使用的圖片，且不要重複*/
+  width: 130px; /*需求的寬度*/
+  // height: 56px; /*需求的高度*/
+  text-indent: 101%; /*讓文字首行縮排到範圍外*/
+  overflow: hidden; /*超過範圍的就自動隱藏*/
+  white-space: nowrap; /*不要斷行就一排，所以只有"首行"*/
+  // background-size: cover;
+  @include media-breakpoint-up(md) {
+    width: 165px;
+  }
+}
+
+// .ball-beat > div {
+//   background-color: $primary;
+// }

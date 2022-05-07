@@ -1,0 +1,229 @@
+// stylelint-disable indentation
+
+// Utilities
+
+$utilities: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$utilities: map-merge(
+  (
+    "font-size": (
+      responsive: true,//new
+      rfs: true,
+      property: font-size,
+      class: fs,
+      values: $font-sizes
+    ),
+    "width": (
+      responsive: true,//new
+      rfs: true,
+      property: width,
+      class: w,
+      values: (
+        10: 10%,
+        15: 15%,
+        20: 20%,
+        25: 25%,
+        30: 30%,
+        35: 35%,
+        40: 40%,
+        45: 45%,
+        50: 50%,
+        55: 55%,
+        60: 60%,
+        65: 65%,
+        70: 70%,
+        75: 75%,
+        80: 80%,
+        85: 85%,
+        90: 90%,
+        95: 95%,
+        100: 100%,
+        auto: auto,
+      )
+    ),
+    "height": (
+      responsive: true,//new
+      rfs: true,
+      property: height,
+      class: h,
+      values: (
+        25: 25%,
+        30: 30%,
+        35: 35%,
+        40: 40%,
+        45: 45%,
+        50: 50%,
+        55: 55%,
+        75: 75%,
+        90: 90%,
+        100: 100%,
+        auto: auto,
+      )
+    ),
+    "top": (
+      responsive: true,//new
+      rfs: true,
+      property: top,
+      values: $position-values
+    ),
+    "start": (
+      responsive: true,//new
+      rfs: true,
+      property: left,
+      class: start,
+      values: $position-values
+    ),
+    "border-end": (
+      responsive: true,//new
+      rfs: true,
+      property: border-right,
+      class: border-end,
+      values: (
+        null: $border-width solid $border-color,
+        0: 0,
+        2: 2px solid $border-color,
+      )
+    ),
+    "border-bottom": (
+      responsive: true,//new
+      rfs: true,
+      property: border-bottom,
+      class: border-bottom,
+      values: (
+        null: $border-width solid $border-color,
+        0: 0,
+        1: 1px solid $border-color,
+        2: 2px solid $border-color,
+      )
+    ),
+    "viewport-height": (
+      property: height,
+      responsive: true,//new
+      class: vh,
+      values: (
+      40: 40vh,
+      50: 50vh,
+      60: 60vh,
+      65: 65vh,
+      70: 70vh,
+      75: 75vh,
+      80: 80vh,
+      85: 85vh,
+      90: 90vh,
+      100: 100vh,
+      auto: auto)
+    ),
+    "viewport-width": (
+      property: width,
+      responsive: true,//new
+      class: vw,
+      values: (
+      25: 25vw,
+      27\.5: 27.5vw,
+      30: 30vw,
+      40: 40vw,
+      50: 50vw,
+      60: 60vw,
+      65: 65vw,
+      67\.5: 67.5vw,
+      70: 70vw,
+      80: 80vw,
+      85: 85vw,
+      87\.5: 87.5vw,
+      90: 90vw,
+      100: 100vw,
+      auto: auto)
+    ),
+    "ratio": (
+      responsive: true,//new
+      rfs: true,
+      property: --bs-aspect-ratio,
+      class: ratio,
+      values: (
+        $aspect-ratios
+        )
+    ),
+    "rounded": (
+      responsive: true,//new
+      property: border-radius,
+      class: rounded,
+      values: (
+        null: $border-radius,
+        0: 0px,
+        1: $border-radius-sm,
+        2: $border-radius,
+        3: $border-radius-lg,
+        4: 8px, //new
+        circle: 50%,
+        pill: $border-radius-pill
+      )
+    ),
+    "single-rounded": (
+      property: border-radius,
+      class: single-rounded,
+      values: (
+        1: 8px 0px 0px 0px, //左上
+        2: 0px 8px 0px 0px, //右上
+        3: 0px 0px 8px 0px, //右下
+        4: 0px 0px 0px 8px, //左下
+      )
+    ),
+    "z-index": (
+      property: z-index,
+      class: z-index,
+      values: (
+        0:0,
+        1:1,
+        2:2,
+        3:3,
+        3000:3000,
+      )
+    ),
+    "object-position": (
+      responsive: true,//new
+      rfs: true,
+      property: object-position,
+      class: img,
+      values: (
+        top: center top,
+        center: center center,
+        bottom: right center,
+        start: left center,
+        start-20: 20% center,
+        start-80: 80% center,
+        end: right center,
+      )
+    ),
+    "transition": (
+      property: transition,
+      class: transition,
+      values: (
+        0\.5:all 0.5s,
+        1:all 1s,
+        2:all 2s,
+        3:all 3s,
+      )
+    ),
+    "gutter": (
+      responsive: true,//new
+      rfs: true,
+      property: --bs-gutter,
+      class: g,
+      values: (
+        0: 0,
+        0\.8: $grid-gutter-width * 0.8,
+        1: $grid-gutter-width * 1,
+      )
+    ),
+    "white-space": (
+      property: white-space,
+      class: text,
+      values: (
+        wrap: normal,
+        nowrap: nowrap,
+        pre-wrap: pre-wrap,//new
+      )
+    ),
+  ),
+  $utilities
+);

@@ -1,0 +1,40 @@
+*,*:before,*:after{
+    box-sizing: border-box;
+    text-decoration: none;
+    // outline: solid 1px;
+  }
+
+  .fa,.far,.fas{
+    font-family: 'Font Awesome 5 Pro';
+  }
+
+  h1,h2,h3,h4,h5,h6,p{
+    margin: 0;
+    line-height: 1.5;
+    color: $dark;
+    margin: 0 !important;
+   }
+
+  a{
+    text-decoration: none !important;
+  }
+
+img{
+    width:100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position : center center;
+  }
+
+ul{
+  padding-left: 0 !important;
+  list-style: none !important;
+  margin: 0 !important;
+}
+
+li{
+  color: $dark;
+}
+
+
