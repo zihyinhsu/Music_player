@@ -42,19 +42,12 @@ function setPlayer(){
   window.YT.ready(function onYouTubeIframeAPIReady(id) {
       player = new YT.Player("player", {
         videoId: id,   // YouTube 影片ID
-        width: 0,            // 播放器寬度 (px)
-        height: 0,           // 播放器高度 (px)
+        width: 0,      // 播放器寬度 (px)
+        height: 0,     // 播放器高度 (px)
         playerVars: {
-          autoplay: 0,            // 自動播放影片
-          controls: 0,            // 顯示播放器
-          showinfo: 0,            // 隱藏影片標題
-          modestbranding: 0,      // 隱藏YouTube Logo
-          loop: 1,                // 重覆播放
-          fs: 0,                  // 隱藏全螢幕按鈕
-          cc_load_policty: 0,     // 隱藏字幕
-          iv_load_policy: 3,      // 隱藏影片註解
-          autohide: 0,             // 影片播放時，隱藏影片控制列
-          rel: 0  //顯示相關影片
+          controls: 0, // 顯示播放器
+          loop: 1,     // 重覆播放
+          autohide: 0, // 影片播放時，隱藏影片控制列
         },
         events: {
           onReady: onPlayerReady,
