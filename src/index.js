@@ -1,7 +1,7 @@
 import "./assets/style/all.scss";
 import axios from "axios";
 import "bootstrap";
-
+import {dragSongStart, dragSongOver, dragEnter, dragLeave, dragEnd, dropList} from './assets/methods/dargAndDrop';
 //dom
 const tag = document.createElement("script");
 const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -34,8 +34,10 @@ let presentSongIndex = 0;
 let currentPlaySongId;
 let repeatList = false;
 let signSongRepeat = false;
-let isRadomSong = false; 
-
+let isRadomSong = false;
+let currentTime = 0;
+let durationTime = 0;
+let songListLength = 0;
 //function
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 function setPlayer(){
@@ -101,7 +103,7 @@ function onPlayerStateChange(e) {
   // 單曲循環
   if (e.data === YT.PlayerState.ENDED){
     if (signSongRepeat) {
-      player.seekTo(0);
+      player.seekTo(durationTime);
     }
   } 
 }
@@ -119,6 +121,7 @@ function searchSong() {
     .then((res) => {
       songsList = res.data.items;
       showSearchSongList();
+      showSongImg();
     })
     .catch((err) => {
       console.log(err);
@@ -129,12 +132,17 @@ function showSearchSongList() {
   let result = "";
   songsListId = [];
   songsList.forEach((i, index) => {
-    result += `<li><a class="songList dropdown-item" data-index=${index} data-vid=${i.id.videoId} href="#">${i.snippet.title}</a></li>`
+    result += `<li draggable="true"><a class="songList dropdown-item" data-index=${index} data-vid=${i.id.videoId} href="#">${i.snippet.title}</a></li>`
     songsListId.push(i.id.videoId)
   });
   playlists.innerHTML = result;
-  player.loadPlaylist(songsListId, 0, 0)
-  songListLi = document.querySelectorAll(".songList")
+  songListLi = document.querySelectorAll(".songList");
+  songListLength = songListLi.length;
+  // 這邊先loadPlaylist並且馬上暫停，是因為這個api有bug，在搜尋完之後的loadPlaylist，只會播一首的list
+  player.loadPlaylist(songsListId, 0, 0);
+  setTimeout(() => {
+    player.pauseVideo();
+  }, 500);
 }
 
 //取得歌曲資料 - 自訂歌單
@@ -163,34 +171,98 @@ function init(){
   volume.classList.add('d-none');
   const id = songListLi[0].dataset.vid;
   setPlayer(id);
+  // 歌單drag and drop
+  watchPlaylistForDragAndDrop();
+}
+// 監聽playList的變動，並執行drag and drop
+function watchPlaylistForDragAndDrop() {
+  let newSongsListId = [];
+  let newSongsListName = [];
+  songListLi.forEach((i) => {
+    i.addEventListener('dragstart', dragSongStart);
+    i.addEventListener('dragover', dragSongOver);
+    i.addEventListener('dragenter', dragEnter);
+    i.addEventListener('dragleave', dragLeave);
+    i.addEventListener('drop', dropList);
+    i.addEventListener('dragend', (e)=>{
+      dragEnd(e);
+      // 每次drop完後重製，不然會越拖越多。
+      newSongsListName = [];
+      // 原生的drag and drop 屬性不會一起改變所以寫在dataset的videoId也就不會變。
+      songListLi.forEach((item) => {
+        newSongsListName.push(item.textContent);
+      });
+      songsList.forEach((item) => {
+        const index = newSongsListName.indexOf(item.textContent);
+        // 因為歌單的來源有兩種search與playlist，兩包的資料不太一樣。
+        if (item.snippet.resourceId.videoId !== undefined) {
+          newSongsListId.splice(index ,0 ,item.snippet.resourceId.videoId)
+        } else {
+          newSongsListId.splice(index ,0 ,item.id.videoId)
+        }
+      })
+      songsListId = newSongsListId;
+      console.log('new',songsListId)
+      // 按照新歌單重新整理歌單
+      let newSongList = [];
+      songsList.forEach((i, index) => {
+        // 因為歌單的來源有兩種search與playlist，兩包的資料不太一樣。
+        if (i.snippet.resourceId.videoId !== undefined) {
+          const songIndex = newSongsListId.indexOf(i.snippet.resourceId.videoId);
+          newSongList.splice(songIndex, 0, songsList[index])
+          if (newSongList.length === songsList.length) {
+            songsList = newSongList;
+            console.log('drop', newSongList)
+            showSongList();
+          }
+        } else {
+          const songIndex = newSongsListId.indexOf(i.id.videoId);
+          newSongList.splice(songIndex, 0, songsList[index]);
+          if (newSongList.length === songsList.length) {
+            songsList = newSongList;
+            showSearchSongList()
+          }
+        }
+      });
+      showSongImg();
+      const currentSongIndex = newSongsListId.indexOf(currentPlaySongId);
+      player.loadPlaylist(newSongsListId, currentSongIndex, currentTime);
+      setTimeout(() => {
+        player.pauseVideo();
+      }, 500)
+    });
+  });
+  
 }
 
 // 顯示歌單
 function showSongList() {
   let result = "";
   songsList.forEach((i, index) => {
-    result += `<li><a class="songList dropdown-item d-inline-block text-truncate" data-index=${index} data-vid=${i.snippet.resourceId.videoId} href="#">${i.snippet.title}</a></li>`;
+    result += `<li draggable="true" ><a class="songList dropdown-item d-inline-block text-truncate" 
+    data-index=${index} data-vid=${i.snippet.resourceId.videoId} href="#">${i.snippet.title}</a></li>`;
   });
   playlists.innerHTML = result;
-  songListLi = document.querySelectorAll(".songList")
+  songListLi = document.querySelectorAll(".songList");
+  songListLength = songListLi.length;
 }
 
 // 點擊歌單播放
 playlists.addEventListener("click", (e) => {
+  
   if (e.target.nodeName === 'A') {
     const songListIndex = Number(e.target.dataset.index);
-    player.playVideoAt(songListIndex);
+    player.loadPlaylist(songsListId, songListIndex, 0);
   }
 })
 
 // 在播放狀態自動對照id與presentSongIndex
 function songIdMatchIndex() {
   songsList.forEach((i, index) => {
-      if (i.snippet.resourceId.videoId === player.getVideoData().video_id) {
+      if (i.snippet.resourceId?.videoId === player.getVideoData().video_id) {
         presentSongIndex = index
-      }
-      else if (i.id.videoId === player.getVideoData().video_id) {
-        presentSongIndex = index
+      } else if (i.id.videoId === player.getVideoData().video_id) {
+          presentSongIndex = index
       }
     })
 }
@@ -205,8 +277,6 @@ function addOrRemoveMusicPlaying() {
     }
   })
 }
-
-
 // 開始播放
 play.addEventListener('click',()=>{
   player.playVideo();
@@ -261,10 +331,10 @@ repeat.addEventListener("click", () => {
     repeat.classList.add('text-primary');
   } else {
     repeat.classList.remove('text-primary');
-    const currentTime = player.getCurrentTime()
     const index = songsListId.indexOf(currentPlaySongId)
     // 重新載入歌單
     player.loadPlaylist(songsListId, index, currentTime);
+    
   }
 });
 
@@ -305,7 +375,7 @@ function mouseControl (e) {
   // 進度條的 % 數
   let xResult = ((mouseX - x) / xWidth).toFixed(2);
   // 尋找指定的秒數
-  player.seekTo(player.getDuration() * xResult);
+  player.seekTo(durationTime * xResult);
 }
 
 
@@ -313,67 +383,68 @@ function mouseControl (e) {
 function getBar () {
   let result = ''
   setInterval(()=>{
-    result = (player.getCurrentTime() / player.getDuration()).toFixed(2);
+    result = (currentTime / durationTime).toFixed(2);
     result = `${result * 100}`+'%'
     currentTimeBar.style.width = result;
   },1000)
 }
-
 // 取得目前歌曲時間
 function getSongCurrentTime () {
   let result = '';
   let min = '';
   let sec = '';
+  
   setInterval(()=>{
-    min = Math.floor(player.getCurrentTime() / 60)
+    currentTime = player.getCurrentTime();
+    min = Math.floor(currentTime / 60)
     // 秒數取餘數
-    sec = Math.floor(player.getCurrentTime() % 60)
+    sec = Math.floor(currentTime % 60)
     result = `${min < 10 ?  '0' + min : min}:${sec < 10 ?  '0' + sec : sec}`
     document.querySelector('.currentTime').textContent = result
   },1000)
 }
-
 // 取得歌曲時間
 function getSongDurationTime () {
   let result = '';
   let min = '';
   let sec = '';
-  min = Math.floor(player.getDuration() / 60)
-  sec = Math.floor(player.getDuration() % 60)
+  durationTime = player.getDuration()
+  min = Math.floor(durationTime / 60)
+  sec = Math.floor(durationTime % 60)
   result = `${min < 10 ?  '0' + min : min}:${sec < 10 ?  '0' + sec : sec}`
   document.querySelector('.lastTime').textContent = result
 }
-
 // 滑鼠控制進度條
 length.addEventListener("click", (e)=>{ mouseControl (e) })
-
 // 調整音量
 volume.addEventListener("change", () => {
   player.setVolume(volume.value);
   volume.style = `background-size:${volume.value}%`;
 });
-
 // hover 顯示 音量條
 volumeBtn.addEventListener("mouseover", (e)=>{ volume.classList.remove('d-none'); })
-
 // hover 隱藏 音量條
 volume.addEventListener("mouseout", (e)=>{ volume.classList.add('d-none'); })
-
 // search關鍵字並覆蓋現有歌單
 search.addEventListener("click", searchSong);
-
 // 歌單重新排序
 function songListSort(){
   let shuffle = []
     songsList.forEach((i, index) => {
-      const songIndex = songsListId.indexOf(i.snippet.resourceId.videoId);
-      shuffle.splice(songIndex, 0, songsList[index])
+      // 因為歌單的來源有兩種search與playlist，兩包的資料不太一樣。
+      if (i.snippet.resourceId.videoId !== undefined) {
+        const songIndex = songsListId.indexOf(i.snippet.resourceId.videoId);
+        shuffle.splice(songIndex, 0, songsList[index])
+      } else {
+        const songIndex = songsListId.indexOf(i.id.videoId);
+        shuffle.splice(songIndex, 0, songsList[index])
+      }
+      
     });
     songsList = shuffle ;
     showSongList();
     showSongImg();
 };
-
 // 背景插入歌曲圖片
 function showSongImg(){
   let songImgData = [];
@@ -382,16 +453,17 @@ function showSongImg(){
   let highQualityImg = []
   let undefinedIndex = [];
   songsList.forEach((item,index) => {
-    songImgData.push(item.snippet.thumbnails.maxres);
-    standardQualityImg.push(item.snippet.thumbnails.standard);
-    highQualityImg.push(item.snippet.thumbnails.high);
-    songImgData.forEach((item,i)=>{
-       if(item === undefined){
-         undefinedIndex.push(i);
-         undefinedIndex = [...new Set(undefinedIndex)];
-      }
-    })
-    undefinedIndex.forEach(index=>{ 
+    if (item.snippet.thumbnails.maxres !== undefined) {
+      songImgData.push(item.snippet.thumbnails.maxres);
+      standardQualityImg.push(item.snippet.thumbnails.standard);
+      highQualityImg.push(item.snippet.thumbnails.high);
+      songImgData.forEach((item,i)=>{
+        if(item === undefined){
+          undefinedIndex.push(i);
+          undefinedIndex = [...new Set(undefinedIndex)];
+       }
+     })
+     undefinedIndex.forEach(index=>{ 
       // 刪除undefined，插入較低畫質的圖片網址
       songImgData.splice(index,1);
       songImgData.splice(index,0,standardQualityImg[index]);
@@ -399,6 +471,15 @@ function showSongImg(){
         songImgData.splice(index,0,highQualityImg[index])
       }
     })
+    } else if (item.snippet.thumbnails.high) {
+      songImgData.push(item.snippet.thumbnails.high);
+    } else if (item.snippet.thumbnails.medium) {
+      songImgData.push(item.snippet.thumbnails.medium);
+    } else if (item.snippet.thumbnails.default) {
+      songImgData.push(item.snippet.thumbnails.default);
+    } else {
+      songImgData.push(undefined)
+    }
   }); 
   songImgData.forEach( item =>{ songImgArr.push(item.url) });
   songImg.src = `${songImgArr[presentSongIndex]}`;
@@ -409,3 +490,9 @@ function showSongImg(){
      songImg.classList.remove('d-none');
    }
 }
+
+function addEventListeners() {
+  watchPlaylistForDragAndDrop();
+  console.log('123')
+}
+addEventListeners()

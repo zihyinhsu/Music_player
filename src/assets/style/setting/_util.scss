@@ -83,6 +83,9 @@ iframe{
   background: $light !important;
 }
 
+.dragOver {
+  background: rgb(221, 95, 95);
+}
 // breakpoint
 @include media-breakpoint-up(md) {
   
