@@ -20,9 +20,12 @@ const search = document.querySelector(".search");
 const playlists = document.querySelector(".playlists");
 const repeatPlayList = document.querySelector(".repeatPlayList");
 const length = document.querySelector(".length");
-const currentTimeBar = document.querySelector('.currentTimeBar')
-const songImg = document.querySelector('.songImg')
-const loading = document.querySelector('.loading')
+const currentTimeBar = document.querySelector('.currentTimeBar');
+const songImg = document.querySelector('.songImg');
+const loading = document.querySelector('.loading');
+const songTitle = document.querySelector('.songTitle');
+const author = document.querySelector('.author');
+
 // variable
 tag.src = "https://www.youtube.com/iframe_api";
 let player= null;
@@ -35,17 +38,20 @@ let currentPlaySongId;
 let repeatList = false;
 let signSongRepeat = false;
 let isRadomSong = false;
-let currentTime = 0;
-let durationTime = 0;
+let isSearch = false; 
+let songTitleArr = [];
+let songAuthorArr = [];
 let songListLength = 0;
+let durationTime = '';
+let currentTime = '';
 //function
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 function setPlayer(){
   window.YT.ready(function onYouTubeIframeAPIReady(id) {
       player = new YT.Player("player", {
-        videoId: id,   // YouTube 影片ID
-        width: 0,      // 播放器寬度 (px)
-        height: 0,     // 播放器高度 (px)
+        videoId: id,
+        width: 0,   
+        height: 0,
         playerVars: {
           controls: 0, // 顯示播放器
           loop: 1,     // 重覆播放
@@ -58,7 +64,6 @@ function setPlayer(){
       });
   });
 }
-
 
 // 一載入就會觸發的函式
 function onPlayerReady(e) {
@@ -88,7 +93,8 @@ function onPlayerStateChange(e) {
     songsListId = player.getPlaylist();
     getBar();
   } else if (e.data == YT.PlayerState.PLAYING) {
-    songIdMatchIndex();
+    currentPlaySongId = player.getVideoData().video_id;
+    presentSongIndex = player.getPlaylistIndex();
     addOrRemoveMusicPlaying();
     document.querySelector(".cdPlayer img").classList.add("cd");
     done = true;
@@ -97,6 +103,7 @@ function onPlayerStateChange(e) {
     play.classList.add('d-none');
     pause.classList.remove('d-none');
     showSongImg();
+    showSongInfo();
   } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
     document.querySelector(".cdPlayer img").classList.remove("cd");
   }
@@ -121,28 +128,28 @@ function searchSong() {
     .then((res) => {
       songsList = res.data.items;
       showSearchSongList();
+      showSongInfo();
       showSongImg();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      isSearch = true;
+      // 搜尋切換歌曲
+      if(isSearch){
+        player.loadPlaylist(songsListId, 0, 0);
+      }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 }
 // 顯示搜尋歌單
 function showSearchSongList() {
   let result = "";
   songsListId = [];
   songsList.forEach((i, index) => {
-    result += `<li draggable="true"><a class="songList dropdown-item" data-index=${index} data-vid=${i.id.videoId} href="#">${i.snippet.title}</a></li>`
+    result += `<li draggable="true"><a class="songList dropdown-item d-inline-block text-truncate" data-index=${index} data-vid=${i.id.videoId} href="#">${i.snippet.title}</a></li>`
     songsListId.push(i.id.videoId)
   });
   playlists.innerHTML = result;
   songListLi = document.querySelectorAll(".songList");
-  songListLength = songListLi.length;
-  // 這邊先loadPlaylist並且馬上暫停，是因為這個api有bug，在搜尋完之後的loadPlaylist，只會播一首的list
-  player.loadPlaylist(songsListId, 0, 0);
-  setTimeout(() => {
-    player.pauseVideo();
-  }, 500);
 }
 
 //取得歌曲資料 - 自訂歌單
@@ -160,6 +167,7 @@ function getSongData() {
       songsList = res.data.items; 
       showSongList();
       showSongImg();
+      showSongInfo();
       init();
     }).catch(err => console.log(err))
 }
@@ -313,6 +321,8 @@ random.addEventListener("click", ()=>{
     random.classList.add('text-primary');
     player.setShuffle(true);
     player.nextVideo();
+    showSongImg();
+    showSongInfo();
     songListSort();
   } else {
     random.classList.remove('text-primary'); 
@@ -323,13 +333,47 @@ random.addEventListener("click", ()=>{
   }
 })
 
+// 歌單重新排序
+function songListSort(){
+  let shuffle = []
+    songsList.forEach((i, index) => {
+      const songIndex = songsListId.indexOf(i.snippet.resourceId.videoId);
+      shuffle.splice(songIndex, 0, songsList[index])
+    });
+    songsList = shuffle ;
+    showSongList();
+    showSongImg();
+    showSongInfo();
+    addOrRemoveMusicPlaying();
+};
+
 // 單曲循環
 repeat.addEventListener("click", () => {
   signSongRepeat = !signSongRepeat;
+  const index = songsListId.indexOf(currentPlaySongId)
   if (signSongRepeat) {
     player.loadVideoById(currentPlaySongId);
+    console.log(index)
+    songsList.forEach((item,i)=>{
+      if(index === i){
+        songTitle.textContent = item.snippet.title;
+        if(item.snippet.videoOwnerChannelTitle){
+          author.textContent = item.snippet.videoOwnerChannelTitle;
+          songAuthorArr.push(item.snippet.videoOwnerChannelTitle)
+        }else{
+          songAuthorArr.push(item.snippet.channelTitle)
+        }
+        // songTitleArr.push();
+        // songAuthorArr.push();
+      }
+    })
+    // songTitle.textContent = songTitleArr[presentSongIndex];
+    // author.textContent = songAuthorArr[presentSongIndex];
+    // console.log(songsList)
+    // songImg.classList.add('d-none');
     repeat.classList.add('text-primary');
   } else {
+    // songImg.classList.remove('d-none');
     repeat.classList.remove('text-primary');
     const index = songsListId.indexOf(currentPlaySongId)
     // 重新載入歌單
@@ -391,21 +435,23 @@ function getBar () {
 // 取得目前歌曲時間
 function getSongCurrentTime () {
   let result = '';
+  let hour = '';
   let min = '';
   let sec = '';
   
   setInterval(()=>{
-    currentTime = player.getCurrentTime();
-    min = Math.floor(currentTime / 60)
+    hour = Math.floor(player.getDuration() / (60 * 60));
+    min = Math.floor(player.getCurrentTime()%(60 * 60) / 60)
     // 秒數取餘數
-    sec = Math.floor(currentTime % 60)
-    result = `${min < 10 ?  '0' + min : min}:${sec < 10 ?  '0' + sec : sec}`
+    sec = Math.floor(player.getCurrentTime() % 60)
+    result = `${hour < 10 ? '0' + hour : hour}:${min < 10 ?  '0' + min : min}:${sec < 10 ?  '0' + sec : sec}`
     document.querySelector('.currentTime').textContent = result
   },1000)
 }
 // 取得歌曲時間
 function getSongDurationTime () {
   let result = '';
+  let hour = '';
   let min = '';
   let sec = '';
   durationTime = player.getDuration()
@@ -425,74 +471,72 @@ volume.addEventListener("change", () => {
 volumeBtn.addEventListener("mouseover", (e)=>{ volume.classList.remove('d-none'); })
 // hover 隱藏 音量條
 volume.addEventListener("mouseout", (e)=>{ volume.classList.add('d-none'); })
-// search關鍵字並覆蓋現有歌單
-search.addEventListener("click", searchSong);
-// 歌單重新排序
-function songListSort(){
-  let shuffle = []
-    songsList.forEach((i, index) => {
-      // 因為歌單的來源有兩種search與playlist，兩包的資料不太一樣。
-      if (i.snippet.resourceId.videoId !== undefined) {
-        const songIndex = songsListId.indexOf(i.snippet.resourceId.videoId);
-        shuffle.splice(songIndex, 0, songsList[index])
-      } else {
-        const songIndex = songsListId.indexOf(i.id.videoId);
-        shuffle.splice(songIndex, 0, songsList[index])
-      }
-      
-    });
-    songsList = shuffle ;
-    showSongList();
-    showSongImg();
-};
+
+// 監聽搜尋的值並覆蓋現有歌單
+inputInfo.addEventListener('change',()=>{
+  if(inputInfo.value === ''){
+    songsListId = player.getPlaylist();
+    player.loadPlaylist(songsListId, 0, 0);
+  }else {
+    player.loadPlaylist(songsListId, 0, 0);
+    play.classList.add('d-none');
+    pause.classList.remove('d-none');
+    setTimeout(()=>{ searchSong(); },1000)
+  }
+})
+
 // 背景插入歌曲圖片
 function showSongImg(){
   let songImgData = [];
   let songImgArr = [];
-  let standardQualityImg = []
-  let highQualityImg = []
+  let maxresQualityImg = []
+  let standardQualityImg = [];
+  let highQualityImg = [];
   let undefinedIndex = [];
-  songsList.forEach((item,index) => {
-    if (item.snippet.thumbnails.maxres !== undefined) {
-      songImgData.push(item.snippet.thumbnails.maxres);
-      standardQualityImg.push(item.snippet.thumbnails.standard);
-      highQualityImg.push(item.snippet.thumbnails.high);
-      songImgData.forEach((item,i)=>{
-        if(item === undefined){
-          undefinedIndex.push(i);
-          undefinedIndex = [...new Set(undefinedIndex)];
-       }
-     })
-     undefinedIndex.forEach(index=>{ 
-      // 刪除undefined，插入較低畫質的圖片網址
-      songImgData.splice(index,1);
-      songImgData.splice(index,0,standardQualityImg[index]);
-      if(standardQualityImg[index] === undefined){
-        songImgData.splice(index,0,highQualityImg[index])
-      }
-    })
-    } else if (item.snippet.thumbnails.high) {
-      songImgData.push(item.snippet.thumbnails.high);
-    } else if (item.snippet.thumbnails.medium) {
-      songImgData.push(item.snippet.thumbnails.medium);
-    } else if (item.snippet.thumbnails.default) {
-      songImgData.push(item.snippet.thumbnails.default);
-    } else {
-      songImgData.push(undefined)
+  songsList.forEach((item) => {
+    maxresQualityImg.push(item.snippet.thumbnails.maxres);
+    standardQualityImg.push(item.snippet.thumbnails.standard);
+    highQualityImg.push(item.snippet.thumbnails.high);
+    if(item.snippet.thumbnails.maxres){
+      songImgData = maxresQualityImg;
+    }else if (item.snippet.thumbnails.standard){
+      songImgData = standardQualityImg;
+    }else if (item.snippet.thumbnails.high){
+      songImgData = highQualityImg;
     }
   }); 
+    songImgData.forEach((item,i)=>{
+       if(item === undefined){
+         undefinedIndex.push(i);
+         undefinedIndex = [...new Set(undefinedIndex)];
+      }
+    })
+    if(undefinedIndex){
+      undefinedIndex.forEach(index=>{ 
+        // 刪除undefined，插入較低畫質的圖片網址
+        songImgData.splice(index,1);
+        songImgData.splice(index,0,standardQualityImg[index]);
+        if(standardQualityImg[index] === undefined){
+          songImgData.splice(index,0,highQualityImg[index]);
+        }
+      })
+    }
   songImgData.forEach( item =>{ songImgArr.push(item.url) });
   songImg.src = `${songImgArr[presentSongIndex]}`;
-  // 如果沒有640p的圖片，就去掉專輯圖片。
-  if(songImg.getAttribute('src') === undefined){
-    songImg.classList.add('d-none');
-   } else {
-     songImg.classList.remove('d-none');
-   }
 }
 
-function addEventListeners() {
-  watchPlaylistForDragAndDrop();
-  console.log('123')
+// 歌曲名稱、上傳者替換
+function showSongInfo(){
+  songsList.forEach((item)=>{
+    songTitleArr.push(item.snippet.title);
+    if(item.snippet.videoOwnerChannelTitle){
+      songAuthorArr.push(item.snippet.videoOwnerChannelTitle)
+    }else{
+      songAuthorArr.push(item.snippet.channelTitle)
+    }
+  })
+  songTitle.textContent = songTitleArr[presentSongIndex];
+  author.textContent = songAuthorArr[presentSongIndex];
 }
-addEventListeners()
+
+
