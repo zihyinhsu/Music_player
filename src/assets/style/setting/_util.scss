@@ -1,7 +1,11 @@
-// .albumImg{
-//   height: 60px;
-//   width: 60px;
-// }
+.albumImg{
+  display: none;
+  @include media-breakpoint-up(md) {
+    display: block;
+    height: 60px;
+    width: 60px;
+  }
+}
 .cd{
   animation: rounded 5s infinite linear;
 }
