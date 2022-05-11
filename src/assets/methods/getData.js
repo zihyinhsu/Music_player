@@ -12,9 +12,7 @@ export function setPlayer(){
           width: 0,   
           height: 0,
           playerVars: {
-            controls: 0, // 顯示播放器
             loop: 1,     // 重覆播放
-            autohide: 0, // 影片播放時，隱藏影片控制列
           },
           events: {
             onReady: onPlayerReady,
@@ -26,8 +24,9 @@ export function setPlayer(){
   
   // 一載入就會觸發的函式
   export  function onPlayerReady(e) {
-    e.target.setVolume(100);
+    e.target.setVolume(50);
     e.target.playVideo();
+    variables.player.setLoop(true);
     // 當使用影片要重覆播放時，需再輸入YouTube 影片ID
     e.target.cuePlaylist({
         listType: 'playlist',
@@ -42,6 +41,7 @@ export function setPlayer(){
   export function onPlayerStateChange(e) {
     // 第一次加載音樂
     if (e.data == -1) {
+      variables.player.setLoop(true);
       variables.currentPlaySongId = variables.player.getVideoData().video_id;
       variables.presentSongIndex = variables.player.getPlaylistIndex();
       getSongDurationTime();
@@ -52,14 +52,20 @@ export function setPlayer(){
       getBar();
     } else if (e.data == YT.PlayerState.PLAYING) {
       songIdMatchIndex();
-      addOrRemoveMusicPlaying();
       dom.cd.classList.add("cd");
       variables.player.setSize(0, 0);
       // play & pause 按鈕切換
       dom.play.classList.add('d-none');
       dom.pause.classList.remove('d-none');
-      showSongImg();
-      showSongInfo();
+      if(!variables.isSearch){
+        showSongImg();
+        showSongInfo();
+        addOrRemoveMusicPlaying();
+      }else{
+        showSongInfo(variables.searchResult);
+        showSongImg(variables.searchResult);
+        addOrRemoveMusicPlaying(variables.searchResultLi);
+      }
     } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
       dom.cd.classList.remove("cd");
     }
@@ -95,6 +101,8 @@ export function setPlayer(){
   export  function init(){
     dom.pause.classList.add('d-none');
     dom.volume.classList.add('d-none');
+    dom.searchResults.classList.add('d-none');
+    dom.repeat.classList.add('d-none');
     const id = variables.songListLi[0].dataset.vid;
     setPlayer(id);
     // 歌單drag and drop
@@ -104,20 +112,18 @@ export function setPlayer(){
   // 搜尋功能
   export function searchSong() {
     axios.get("https://www.googleapis.com/youtube/v3/search", {
-        params: {
-          part: "snippet", // 必填，把需要的資訊列出來
-          maxResults: 10, // 預設為五筆資料，可以設定1~50
-          q: `${dom.inputInfo.value}`,
-          key: process.env.KEY
-        }
+      params: {
+        part: "snippet", // 必填，把需要的資訊列出來
+        maxResults: 10, // 預設為五筆資料，可以設定1~50
+        q: `${dom.inputInfo.value}`,
+        key: process.env.KEY
+      }
+    })
+    .then((res) => {
+      variables.searchResult = res.data.items;
+      showSearchSongList();
       })
-      .then((res) => {
-        variables.songsList = res.data.items;
-        showSearchSongList();
-        showSongInfo();
-        showSongImg();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .catch((err) => {
+        console.log(err);
+      });
   }

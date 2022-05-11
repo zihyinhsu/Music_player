@@ -22,6 +22,7 @@ const albumImg = document.querySelector('.albumImg');
 const loading = document.querySelector('.loading');
 const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
+const searchResults = document.querySelector('.searchResult');
 export {
     tag,
     firstScriptTag,
@@ -46,7 +47,8 @@ export {
     albumImg,
     loading,
     songTitle,
-    author
+    author,
+    searchResults
 };
 
 // variables
@@ -54,23 +56,30 @@ let player= null;
 let playId = 'PL5NDQ4Fnj_BzeO1zSQ4WW62uTik5XZyzQ' ;
 let songsList = [];
 let songsListId = [];
+let searchResult = [];
+let searchResultId = [];
+let searchResultLi = [];
 let songListLi = [];
 let songTitleArr = [];
 let songAuthorArr = [];
 let currentPlaySongId = null;
-let repeatList = false;
-let signSongRepeat = false;
+let repeatList = true;
+let signSongRepeat = true;
 let isRadomSong = false;
 let currentTime = 0;
 let durationTime = 0;
 let songListLength = 0;
 let presentSongIndex = 0;
+let isSearch = false;
 
 export default{
     player,
     playId,
     songsList,
+    searchResult,
     songsListId,
+    searchResultId,
+    searchResultLi,
     songListLi,
     songTitleArr,
     songAuthorArr,
@@ -81,5 +90,6 @@ export default{
     currentTime,
     durationTime,
     songListLength,
-    presentSongIndex
+    presentSongIndex,
+    isSearch
 }

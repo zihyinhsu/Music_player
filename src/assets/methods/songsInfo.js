@@ -1,13 +1,13 @@
 import variables,* as dom from './dom';
 
 // 背景插入歌曲圖片
-export function showSongImg(){
+export function showSongImg(dataList = variables.songsList){
     let songImgData = [];
     let songImgArr = [];
     let standardQualityImg = []
     let highQualityImg = []
     let undefinedIndex = [];
-    variables.songsList.forEach((item) => {
+    dataList.forEach((item) => {
       if (item.snippet.thumbnails.maxres !== undefined) {
         songImgData.push(item.snippet.thumbnails.maxres);
         standardQualityImg.push(item.snippet.thumbnails.standard);
@@ -42,8 +42,10 @@ export function showSongImg(){
   }
   
   // 歌曲名稱、上傳者替換
-  export function showSongInfo(){
-    variables.songsList.forEach((item)=>{
+  export function showSongInfo(dataList = variables.songsList){
+    variables.songTitleArr = [];
+    variables.songAuthorArr = [];
+    dataList.forEach((item)=>{
       variables.songTitleArr.push(item.snippet.title);
       if(item.snippet.videoOwnerChannelTitle){
         variables.songAuthorArr.push(item.snippet.videoOwnerChannelTitle)

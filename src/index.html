@@ -34,10 +34,15 @@
           <div class="cdPlayer position-absolute top-50 start-50 translate-middle">
             <img src="https://i.imgur.com/WrzRzIh.png" alt="">
           </div>
-          <div class="from-group position-absolute w-100" style="background:transparent;">
-              <input type="search" class="inputInfo form-control position-relative " style="opacity:0.5; box-shadow:none;">
-              <i class="fa-solid fa-magnifying-glass search cursor-pointer position-absolute top-50 start-95 translate-middle"></i>
-           </div>
+          <form class="position-relative m-3 m-md-5 w-md-40">
+            <div class="form-group w-100">
+              <input placeholder="在這裡搜尋歌曲" type="search" class="inputInfo form-control position-relative" style="box-shadow:none;">
+              <!-- <i class="fa-solid fa-magnifying-glass search cursor-pointer position-absolute top-50 start-95 translate-middle"></i> -->
+            </div>
+            <ul class="searchResult bg-white rounded-3 w-100">
+              <li>搜尋結果</li>
+            </ul>
+          </form>
         </div>
         <div class="bg-dark">
           <div class="container py-4">
@@ -71,17 +76,18 @@
                     </span>
                     <i class="fa-solid fa-forward forward cursor-pointer p-2 me-1 me-md-3"></i>
                     <i class="fa-solid fa-forward-step next cursor-pointer p-2 me-1 me-md-3"></i>
-                    <i class="fa-solid fa-repeat repeat cursor-pointer p-2 me-1 me-md-3"></i>
-                    <i class="fa-solid fa-rotate-right repeatPlayList cursor-pointer p-2"></i>
+                    <i class="fa-solid fa-repeat repeatPlayList text-primary cursor-pointer p-2 me-1 me-md-3"></i>
+                    <i class="fa-solid fa-1 repeat text-primary cursor-pointer p-2"></i>
+                    <!-- <i class="fa-solid fa-rotate-right repeatPlayList cursor-pointer p-2"></i> -->
                   </div>
                   <div class="progressbar w-90 w-md-100">
                     <div class="music-bar d-flex align-items-center" id="progress">
-                        <p class="currentTime text-white fs-small me-1 mb-0">00:00</p>
+                        <p class="currentTime text-white fs-small me-1 mb-0">00:00:00</p>
                         <div class="length">
                           <div class="ball"></div>
                           <div class="currentTimeBar"></div>
                         </div>
-                        <p class="lastTime text-white fs-small ms-1 mb-0">00:00</p>
+                        <p class="lastTime text-white fs-small ms-1 mb-0">00:00:00</p>
                     </div>
                   </div>
                 </div>
