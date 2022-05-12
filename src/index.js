@@ -62,7 +62,6 @@ dom.songRepeatController.addEventListener('click', () => {
   variables.songControlCounter ++;
   const controlNum = variables.songControlCounter % 3 ;
   const index = variables.songsListId.indexOf(variables.currentPlaySongId)
-  console.log(index)
   switch (controlNum){
     // 取消全歌循環
     case 0 :
@@ -70,7 +69,6 @@ dom.songRepeatController.addEventListener('click', () => {
       dom.repeatPlayList.classList.remove('text-primary');
       dom.repeat.classList.add('d-none');
       variables.playListLoopPlay = false;
-      console.log("loopFalse")
       variables.player.setLoop(false);
       variables.player.loadPlaylist(variables.songsListId, index, variables.currentTime);
       break;
