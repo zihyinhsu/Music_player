@@ -34,7 +34,7 @@
           <div class="cdPlayer position-absolute top-50 start-50 translate-middle">
             <img src="https://i.imgur.com/WrzRzIh.png" alt="">
           </div>
-          <form class="position-relative m-3 m-md-5 w-md-40">
+          <form class="position-relative m-3 m-md-5 w-md-40" onkeypress="if(event.keyCode == 13){event.preventDefault()}">
             <div class="form-group w-100">
               <input placeholder="在這裡搜尋歌曲" type="search" class="inputInfo form-control position-relative" style="box-shadow:none;">
               <!-- <i class="fa-solid fa-magnifying-glass search cursor-pointer position-absolute top-50 start-95 translate-middle"></i> -->
@@ -76,9 +76,12 @@
                     </span>
                     <i class="fa-solid fa-forward forward cursor-pointer p-2 me-1 me-md-3"></i>
                     <i class="fa-solid fa-forward-step next cursor-pointer p-2 me-1 me-md-3"></i>
-                    <i class="fa-solid fa-repeat repeatPlayList text-primary cursor-pointer p-2 me-1 me-md-3"></i>
-                    <i class="fa-solid fa-1 repeat text-primary cursor-pointer p-2"></i>
+                    <div class="songRepeatController cursor-pointer p-2 me-1 me-md-3">
+                      <i class="fa-solid fa-repeat repeatPlayList "></i>
+                      <i class="fa-solid fa-1 repeat d-none text-primary"></i>
                     <!-- <i class="fa-solid fa-rotate-right repeatPlayList cursor-pointer p-2"></i> -->
+                    </div>
+                    
                   </div>
                   <div class="progressbar w-90 w-md-100">
                     <div class="music-bar d-flex align-items-center" id="progress">

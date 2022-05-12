@@ -12,7 +12,7 @@ export function setPlayer(){
           width: 0,   
           height: 0,
           playerVars: {
-            loop: 1,     // 重覆播放
+            loop: 0,     // 重覆播放 1 不重複播放 0
           },
           events: {
             onReady: onPlayerReady,
@@ -26,7 +26,6 @@ export function setPlayer(){
   export  function onPlayerReady(e) {
     e.target.setVolume(50);
     e.target.playVideo();
-    variables.player.setLoop(true);
     // 當使用影片要重覆播放時，需再輸入YouTube 影片ID
     e.target.cuePlaylist({
         listType: 'playlist',
@@ -41,7 +40,6 @@ export function setPlayer(){
   export function onPlayerStateChange(e) {
     // 第一次加載音樂
     if (e.data == -1) {
-      variables.player.setLoop(true);
       variables.currentPlaySongId = variables.player.getVideoData().video_id;
       variables.presentSongIndex = variables.player.getPlaylistIndex();
       getSongDurationTime();
@@ -68,9 +66,10 @@ export function setPlayer(){
       }
     } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
       dom.cd.classList.remove("cd");
+      
     }
     // 單曲循環
-    if (e.data === YT.PlayerState.ENDED){
+    if (e.data === YT.PlayerState.ENDED && variables.playListLoopPlay === null){
       if (variables.signSongRepeat) {
         variables.player.seekTo(0);
       }
