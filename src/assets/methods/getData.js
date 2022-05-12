@@ -83,7 +83,7 @@ export function setPlayer(){
       params: {
       part: 'snippet,contentDetails',// 必填，把需要的資訊列出來
       playlistId: variables.playId,// 播放清單的id
-      maxResults: 20,// 預設為五筆資料，可以設定1~50
+      maxResults: 10,// 預設為五筆資料，可以設定1~50
       key: process.env.KEY
       }
       })
@@ -113,7 +113,7 @@ export function setPlayer(){
     axios.get("https://www.googleapis.com/youtube/v3/search", {
       params: {
         part: "snippet", // 必填，把需要的資訊列出來
-        maxResults: 10, // 預設為五筆資料，可以設定1~50
+        maxResults: 20, // 預設為五筆資料，可以設定1~50
         q: `${dom.inputInfo.value}`,
         key: process.env.KEY
       }

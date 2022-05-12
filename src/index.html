@@ -37,9 +37,8 @@
           <form class="position-relative m-3 m-md-5 w-md-40" onkeypress="if(event.keyCode == 13){event.preventDefault()}">
             <div class="form-group w-100">
               <input placeholder="在這裡搜尋歌曲" type="search" class="inputInfo form-control position-relative" style="box-shadow:none;">
-              <!-- <i class="fa-solid fa-magnifying-glass search cursor-pointer position-absolute top-50 start-95 translate-middle"></i> -->
             </div>
-            <ul class="searchResult bg-white rounded-3 w-100">
+            <ul class="searchResult position-absolute bg-white rounded-3 w-100" style="overflow-y:auto;">
               <li>搜尋結果</li>
             </ul>
           </form>

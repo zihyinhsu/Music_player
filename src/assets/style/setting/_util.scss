@@ -1,3 +1,9 @@
+.searchResult{
+  max-height: 300px;
+  @include media-breakpoint-up(md) {
+    max-height: 500px;
+  }
+}
 .albumImg{
   display: none;
   @include media-breakpoint-up(md) {

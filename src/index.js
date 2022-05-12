@@ -1,10 +1,9 @@
 import "./assets/style/all.scss";
-import axios from "axios";
 import "bootstrap";
 import variables,* as dom from './assets/methods/dom';
 import {mouseControl} from './assets/methods/progressBar';
 import {showSongImg,showSongInfo} from './assets/methods/songsInfo';
-import {songListSort,showSearchSongList, showSongList ,addOrRemoveMusicPlaying} from './assets/methods/songList';
+import {songListSort, showSongList ,addOrRemoveMusicPlaying} from './assets/methods/songList';
 import {getSongData,searchSong} from './assets/methods/getData';
 
 dom.tag.src = "https://www.youtube.com/iframe_api";
@@ -60,7 +59,6 @@ dom.random.addEventListener("click", ()=>{
 
 // 歌曲播放循環控制
 dom.songRepeatController.addEventListener('click', () => {
-  // variables.player.playVideo();
   variables.songControlCounter ++;
   const controlNum = variables.songControlCounter % 3 ;
   const index = variables.songsListId.indexOf(variables.currentPlaySongId)
@@ -90,9 +88,7 @@ dom.songRepeatController.addEventListener('click', () => {
       dom.repeat.classList.remove('d-none');
       variables.player.loadVideoById(variables.currentPlaySongId);
       break;
-    
   }
-
 })
 
 // 快進10秒
@@ -129,8 +125,10 @@ dom.inputInfo.addEventListener('input',()=>{
     if(dom.inputInfo.value === ''){
       dom.searchResults.classList.add('d-none');
     }else {
-      searchSong();
-      variables.isSearch = true;
+      setTimeout(()=>{
+        searchSong();
+        variables.isSearch = true;
+      },1000)
     }
 })
 
@@ -179,4 +177,8 @@ dom.searchResults.addEventListener("click", (e) => {
     addOrRemoveMusicPlaying(variables.searchResultLi);
     variables.isSearch = true;
   }
+})
+
+dom.functionBar.addEventListener('click',()=>{
+  dom.searchResults.classList.add('d-none');
 })

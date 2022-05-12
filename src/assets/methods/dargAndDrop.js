@@ -38,10 +38,6 @@ export function watchPlaylistForDragAndDrop() {
     i.addEventListener('dragleave', dragLeave);
     i.addEventListener('drop', dropList);
     i.addEventListener('dragend', dragEnd);
-    // i.addEventListener('dragend', (e)=>{
-    //   dragEnd(e);
-      
-    // });
   });
   
   

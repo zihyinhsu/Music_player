@@ -12,7 +12,6 @@ const random = document.querySelector(".random");
 const volume = document.querySelector(".volume");
 const volumeBtn = document.querySelector(".volumeBtn");
 const inputInfo = document.querySelector(".inputInfo");
-// const search = document.querySelector(".search");
 const playlists = document.querySelector(".playlists");
 const repeatPlayList = document.querySelector(".repeatPlayList");
 const length = document.querySelector(".length");
@@ -24,6 +23,7 @@ const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
 const searchResults = document.querySelector('.searchResult');
 const songRepeatController = document.querySelector('.songRepeatController');
+const functionBar = document.querySelector('.functionBar');
 export {
     tag,
     firstScriptTag,
@@ -39,7 +39,6 @@ export {
     volume,
     volumeBtn,
     inputInfo,
-    // search,
     playlists,
     repeatPlayList,
     length,
@@ -51,6 +50,7 @@ export {
     author,
     searchResults,
     songRepeatController,
+    functionBar
 };
 
 // variables
