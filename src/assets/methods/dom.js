@@ -23,6 +23,7 @@ const loading = document.querySelector('.loading');
 const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
 const searchResults = document.querySelector('.searchResult');
+const songRepeatController = document.querySelector('.songRepeatController');
 export {
     tag,
     firstScriptTag,
@@ -48,7 +49,8 @@ export {
     loading,
     songTitle,
     author,
-    searchResults
+    searchResults,
+    songRepeatController,
 };
 
 // variables
@@ -71,6 +73,8 @@ let durationTime = 0;
 let songListLength = 0;
 let presentSongIndex = 0;
 let isSearch = false;
+let songControlCounter = 0;
+let playListLoopPlay = false;
 
 export default{
     player,
@@ -91,5 +95,7 @@ export default{
     durationTime,
     songListLength,
     presentSongIndex,
-    isSearch
+    isSearch,
+    songControlCounter,
+    playListLoopPlay
 }

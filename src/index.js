@@ -1,11 +1,10 @@
 import "./assets/style/all.scss";
 import axios from "axios";
 import "bootstrap";
-import {watchPlaylistForDragAndDrop} from './assets/methods/dargAndDrop';
 import variables,* as dom from './assets/methods/dom';
 import {mouseControl} from './assets/methods/progressBar';
 import {showSongImg,showSongInfo} from './assets/methods/songsInfo';
-import {addOrRemoveMusicPlaying,songListSort} from './assets/methods/songList';
+import {songListSort,showSearchSongList, showSongList ,addOrRemoveMusicPlaying} from './assets/methods/songList';
 import {getSongData,searchSong} from './assets/methods/getData';
 
 dom.tag.src = "https://www.youtube.com/iframe_api";
@@ -35,9 +34,6 @@ dom.previous.addEventListener("click", ()=>{
 
 // 下一首
 dom.next.addEventListener("click", ()=>{
-  if(variables.signSongRepeat){
-    dom.repeat.click();
-  }
   variables.player.stopVideo();
   variables.player.nextVideo();
 });
@@ -60,40 +56,44 @@ dom.random.addEventListener("click", ()=>{
     dom.repeatPlayList.click();
   }
 })
+//
 
-
-let repeatOrder = 1;
-// 歌單循環
-dom.repeatPlayList.addEventListener("click", ()=>{
-  variables.player.playVideo();
-  repeatOrder++;
-  variables.repeatList = !variables.repeatList;
-  if (variables.repeatList) {
+// 歌曲播放循環控制
+dom.songRepeatController.addEventListener('click', () => {
+  // variables.player.playVideo();
+  variables.songControlCounter ++;
+  const controlNum = variables.songControlCounter % 3 ;
+  const index = variables.songsListId.indexOf(variables.currentPlaySongId)
+  console.log(index)
+  switch (controlNum){
+    // 取消全歌循環
+    case 0 :
+      dom.repeatPlayList.classList.remove('d-none');
+      dom.repeatPlayList.classList.remove('text-primary');
+      dom.repeat.classList.add('d-none');
+      variables.playListLoopPlay = false;
+      console.log("loopFalse")
+      variables.player.setLoop(false);
+      variables.player.loadPlaylist(variables.songsListId, index, variables.currentTime);
+      break;
+    // 全歌單循環
+    case 1 : 
      variables.player.setLoop(true);
+     variables.playListLoopPlay = true;
      dom.repeatPlayList.classList.add('text-primary');
-     console.log(repeatOrder);
-  } 
-  // 單曲循環
-  if(repeatOrder === 2){
-    dom.repeat.classList.remove('d-none');
-    dom.repeatPlayList.classList.add('d-none');
-    variables.player.loadVideoById(variables.currentPlaySongId);
-    repeatOrder = 0;
+     variables.player.loadPlaylist(variables.songsListId, index, variables.currentTime);
+      break;  
+    // 單首循環
+    case 2 :
+      dom.repeatPlayList.classList.add('d-none');
+      variables.playListLoopPlay = null;
+      dom.repeat.classList.remove('d-none');
+      variables.player.loadVideoById(variables.currentPlaySongId);
+      break;
+    
   }
-});
 
-// 單曲循環
-dom.repeat.addEventListener("click", () => {
-  variables.signSongRepeat = !variables.signSongRepeat;
-  // 歌單不循環
-  if (!variables.signSongRepeat) {
-    dom.repeat.classList.add('d-none');
-    dom.repeatPlayList.classList.remove('d-none');
-    dom.repeatPlayList.classList.remove('text-primary');
-    variables.player.setLoop(false);
-    variables.repeatList = false;
-  };
-});
+})
 
 // 快進10秒
 dom.forward.addEventListener("click", ()=>{
@@ -125,9 +125,8 @@ dom.volumeBtn.addEventListener("mouseover", ()=>{ dom.volume.classList.remove('d
 dom.volume.addEventListener("mouseout", ()=>{ dom.volume.classList.add('d-none'); })
 
 // 監聽搜尋的值並覆蓋現有歌單
-dom.inputInfo.addEventListener('change',()=>{
+dom.inputInfo.addEventListener('input',()=>{
     if(dom.inputInfo.value === ''){
-      variables.searchResult = null;
       dom.searchResults.classList.add('d-none');
     }else {
       searchSong();
@@ -137,11 +136,38 @@ dom.inputInfo.addEventListener('change',()=>{
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
-  if (e.target.nodeName === 'A') {
+  let newSongsListName = [];
+  let newSongsListId = [];
+  if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
+    variables.songListLi.forEach((item) => {
+      newSongsListName.push(item.textContent);
+    });
+    variables.songsList.forEach((item) => {
+      const index = newSongsListName.indexOf(item.snippet.title);
+      if (item.snippet.resourceId?.videoId) {
+        newSongsListId.splice(index ,0 ,item.snippet.resourceId.videoId)
+      }
+    })
+    variables.songsListId = newSongsListId;
+    // 按照新歌單重新整理歌單
+    let newSongList = [];
+    variables.songsList.forEach((i, index) => {
+      if (i.snippet.resourceId?.videoId) {
+        const songIndex = newSongsListId.indexOf(i.snippet.resourceId.videoId);
+        newSongList.splice(songIndex, 0, variables.songsList[index])
+        if (newSongList.length === variables.songsList.length) {
+          variables.songsList = newSongList;
+          showSongList();
+        }
+      }
+    });
+    showSongImg();
     const songListIndex = Number(e.target.dataset.index);
-    variables.player.loadPlaylist(variables.songsListId, songListIndex, 0);
+    setTimeout(() => {
+      variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+    },1200)
     variables.isSearch = false;
-  }
+  } else {return}
 })
 // 點擊搜尋播放
 dom.searchResults.addEventListener("click", (e) => {
@@ -154,11 +180,3 @@ dom.searchResults.addEventListener("click", (e) => {
     variables.isSearch = true;
   }
 })
-
-function addEventListeners() {
-  watchPlaylistForDragAndDrop();
-  // console.log('123')
-}
-addEventListeners();
-
-
