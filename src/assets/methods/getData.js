@@ -12,7 +12,7 @@ export function setPlayer(){
           width: 0,   
           height: 0,
           playerVars: {
-            loop: 0,     // 重覆播放 1 不重複播放 0
+            loop: 1,     // 重覆播放 1 不重複播放 0
           },
           events: {
             onReady: onPlayerReady,
@@ -60,13 +60,14 @@ export function setPlayer(){
         showSongInfo();
         addOrRemoveMusicPlaying();
       }else{
-        showSongInfo(variables.searchResult);
-        showSongImg(variables.searchResult);
-        addOrRemoveMusicPlaying(variables.searchResultLi);
+        if(variables.songControlCounter !== 2){
+          showSongInfo(variables.searchResult);
+          showSongImg(variables.searchResult);
+          addOrRemoveMusicPlaying(variables.searchResultLi);
+        }
       }
     } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
       dom.cd.classList.remove("cd");
-      
     }
     // 單曲循環
     if (e.data === YT.PlayerState.ENDED && variables.playListLoopPlay === null){

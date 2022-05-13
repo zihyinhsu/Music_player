@@ -1,5 +1,6 @@
 import "./assets/style/all.scss";
-import "bootstrap";
+import "bootstrap/js/dist/dropdown";
+import throttle from 'lodash/throttle'
 import variables,* as dom from './assets/methods/dom';
 import {mouseControl} from './assets/methods/progressBar';
 import {showSongImg,showSongInfo} from './assets/methods/songsInfo';
@@ -61,7 +62,12 @@ dom.random.addEventListener("click", ()=>{
 dom.songRepeatController.addEventListener('click', () => {
   variables.songControlCounter ++;
   const controlNum = variables.songControlCounter % 3 ;
-  const index = variables.songsListId.indexOf(variables.currentPlaySongId)
+  let dataList = null;
+  if(variables.isSearch === true){
+    dataList = variables.searchResult;
+  }else{
+    dataList = variables.songsListId
+  }
   switch (controlNum){
     // 取消全歌循環
     case 0 :
@@ -70,21 +76,29 @@ dom.songRepeatController.addEventListener('click', () => {
       dom.repeat.classList.add('d-none');
       variables.playListLoopPlay = false;
       variables.player.setLoop(false);
-      variables.player.loadPlaylist(variables.songsListId, index, variables.currentTime);
+      if(variables.isSearch === true){
+        variables.player.loadPlaylist(variables.searchResult, variables.presentSongIndex, variables.currentTime);
+      }else{
+        variables.player.loadPlaylist(variables.songsListId, variables.presentSongIndex, variables.currentTime);
+      }
       break;
     // 全歌單循環
     case 1 : 
      variables.player.setLoop(true);
      variables.playListLoopPlay = true;
      dom.repeatPlayList.classList.add('text-primary');
-     variables.player.loadPlaylist(variables.songsListId, index, variables.currentTime);
+     if(variables.isSearch === true){
+      variables.player.loadPlaylist(variables.searchResult, variables.presentSongIndex, variables.currentTime);
+     }else{
+      variables.player.loadPlaylist(variables.songsListId, variables.presentSongIndex, variables.currentTime);
+     }
       break;  
     // 單首循環
     case 2 :
       dom.repeatPlayList.classList.add('d-none');
       variables.playListLoopPlay = null;
       dom.repeat.classList.remove('d-none');
-      variables.player.loadVideoById(variables.currentPlaySongId);
+      variables.player.loadPlaylist([variables.currentPlaySongId], variables.presentSongIndex);
       break;
   }
 })
@@ -119,16 +133,15 @@ dom.volumeBtn.addEventListener("mouseover", ()=>{ dom.volume.classList.remove('d
 dom.volume.addEventListener("mouseout", ()=>{ dom.volume.classList.add('d-none'); })
 
 // 監聽搜尋的值並覆蓋現有歌單
-dom.inputInfo.addEventListener('input',()=>{
-    if(dom.inputInfo.value === ''){
-      dom.searchResults.classList.add('d-none');
-    }else {
-      setTimeout(()=>{
-        searchSong();
-        variables.isSearch = true;
-      },1000)
-    }
-})
+dom.inputInfo.addEventListener('input',throttle(function () {       
+  if(dom.inputInfo.value === ''){
+    dom.searchResults.classList.add('d-none');
+  }else {
+    searchSong();
+    variables.isSearch = true;
+  }
+}, 2000))
+
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
