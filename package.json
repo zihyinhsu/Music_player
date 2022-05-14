@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "webpack serve --mode development",
-    "build": "webpack --mode production"
+    "build": "cross-env NODE_ENV=production && webpack --mode production"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "@babel/plugin-transform-runtime": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "babel-loader": "^8.2.5",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "dotenv-webpack": "^7.1.0",
     "file-loader": "^6.2.0",

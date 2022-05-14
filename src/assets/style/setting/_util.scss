@@ -1,7 +1,7 @@
 .searchResult{
   max-height: 300px;
   @include media-breakpoint-up(md) {
-    max-height: 500px;
+    max-height: 400px;
   }
 }
 .albumImg{
@@ -96,6 +96,12 @@ iframe{
 .dragOver {
   background: rgb(221, 95, 95);
 }
+
+::placeholder {
+  color: white !important;
+  opacity:0.5 !important;
+}
+
 // breakpoint
 @include media-breakpoint-up(md) {
   

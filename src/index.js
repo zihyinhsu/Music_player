@@ -1,6 +1,6 @@
 import "./assets/style/all.scss";
 import "bootstrap/js/dist/dropdown";
-import throttle from 'lodash/throttle'
+import {throttle} from 'lodash'
 import variables,* as dom from './assets/methods/dom';
 import {mouseControl} from './assets/methods/progressBar';
 import {showSongImg,showSongInfo} from './assets/methods/songsInfo';
