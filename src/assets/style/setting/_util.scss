@@ -22,7 +22,9 @@
 .cd{
   animation: rounded 5s infinite linear;
 }
-
+.pointEvents {
+  pointer-events: none;
+}
 @keyframes rounded{
     0%{
     transform:rotate(0deg);
