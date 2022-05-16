@@ -32,73 +32,64 @@
         </div>
     </div>
     <div class="musicBox bg-grey d-flex flex-column vw-100 vh-100">
-      <div class="d-flex flex-column flex-md-row h-100">
+      <div class="d-flex flex-column flex-md-row bg-black h-100">
         <div class="d-flex flex-column align-items-center align-items-md-start w-md-20 m-5">
           <img class="logo mb-2 mb-md-4" src="https://i.imgur.com/VmcrEiS.png" style="width:127px; height:48px;" alt="">
           <p class="text-white d-none d-md-block mb-1">搜尋</p>
           <form class="position-relative w-100" onkeypress="if(event.keyCode == 13){event.preventDefault()}">
             <div class="form-group w-100">
-              <input placeholder="在這裡搜尋歌曲" type="search" class="inputInfo form-control position-relative bg-grey border border-white text-white" style="box-shadow:none;">
+              <input type="search" class="inputInfo form-control position-relative bg-dark border border-white text-white" style="box-shadow:none;">
               <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-92.5 translate-middle text-white"></i>
             </div>
-            <ul class="searchResult position-absolute bg-white rounded-3 w-100 z-index-3" style="overflow-y:auto;">
-              <li>搜尋結果</li>
-            </ul>
+            <ul class="searchResult position-absolute bg-white rounded-3 overflow-auto w-100 z-index-3"></ul>
           </form>
         </div>
-        <div class="screen position-relative flex-grow-1 w-md-80">
+        <div class="screen position-relative flex-grow-1 w-md-80 overflow-hidden">
           <div class="position-absolute w-100 h-100">
-            <img class="songImg object-fit-cover w-100 h-100" src="https://i.ytimg.com/vi/QlFv1VCaNUQ/maxresdefault.jpg" alt="">
-          </div>
-          <div class="cdPlayer position-absolute top-50 start-50 translate-middle">
-            <img src="https://i.imgur.com/WrzRzIh.png" alt="">
+            <div class="position-absolute bg-light w-100 h-100" style="pointer-events: none;"  id="player"></div>
+            <ul class="playlists bg-white position-absolute overflow-auto end-n100 w-100 h-100 transition-1"></ul>
           </div>
         </div>
       </div>
       <div class="bg-dark">
-        <div class="container py-4">
+        <div class="container-xl py-4">
           <div class="functionBar d-md-flex justify-content-center align-items-center">
             <div class="songInfo d-flex align-items-center justify-content-between justify-content-md-start w-md-30 pb-2 pb-md-0">
               <img class="albumImg me-4" src="https://i.imgur.com/5SxafLv.png" alt="">
-              <div class="album&Singer me-2 w-80 w-md-60">
-                <marquee direction="left" width="200">
+              <div class="album&Singer me-2 w-80">
+                <marquee direction="left">
                   <div class="songTitle text-white mb-1">songTitle</div>
                 </marquee>
                 <div class="author text-greyLight overflow-hidden text-truncate">author</div>
               </div>
-              <div class="d-flex">
-                <div class="likeBtn cursor-pointer me-md-2">
-                  <i class="fa-regular fa-heart text-white p-2"></i>  
-                </div>
-                <div class="songMenuBtn cursor-pointer me-md-2">
-                  <i class="fa-solid fa-ellipsis-vertical text-white p-2"></i>  
+              <div class="d-flex position-relative">
+                <div class="cdPlayer">
+                  <img src="https://i.imgur.com/WrzRzIh.png" alt="">
                 </div>
               </div>
             </div>
               <div class="musicControler d-flex flex-column justify-content-center align-items-center w-md-40 pb-4 pb-md-0">
-                <div class="mainControler d-flex align-items-center text-greyLight mb-2">
-                  <i class="fa-solid fa-shuffle random cursor-pointer p-2 me-1 me-md-3"></i>
-                  <i class="fa-solid fa-backward-step previous cursor-pointer p-2 me-1 me-md-3"></i>
-                  <i class="fa-solid fa-backward backward cursor-pointer p-2 me-1 me-md-3"></i>
-                  <span class="position-relative play cursor-pointer me-1 me-md-3">
-                    <div class="position-absolute top-50 start-50 translate-middle" style="opacity:0;" id="player"></div>
+                <div class="mainControler d-flex justify-content-between align-items-center text-greyLight w-70 mb-2">
+                  <i class="fa-solid fa-shuffle random cursor-pointer p-2"></i>
+                  <i class="fa-solid fa-backward-step previous cursor-pointer p-2"></i>
+                  <i class="fa-solid fa-backward backward cursor-pointer p-2"></i>
+                  <span class="position-relative play cursor-pointer">
                     <i class="fa-solid fa-circle-play fs-3 p-2"></i>
                   </span>
-                  <span class="pause cursor-pointer me-1 me-md-3">
+                  <span class="pause cursor-pointer">
                     <i class="fa-solid fa-circle-pause fs-3 p-2"></i>
                   </span>
-                  <i class="fa-solid fa-forward forward cursor-pointer p-2 me-1 me-md-3"></i>
-                  <i class="fa-solid fa-forward-step next cursor-pointer p-2 me-1 me-md-3"></i>
-                  <div class="songRepeatController cursor-pointer p-2 me-1 me-md-3">
+                  <i class="fa-solid fa-forward forward cursor-pointer p-2"></i>
+                  <i class="fa-solid fa-forward-step next cursor-pointer p-2"></i>
+                  <div class="songRepeatController cursor-pointer p-2">
                     <i class="fa-solid fa-repeat repeatPlayList "></i>
                     <i class="fa-solid fa-1 repeat d-none text-primary"></i>
-                  <!-- <i class="fa-solid fa-rotate-right repeatPlayList cursor-pointer p-2"></i> -->
                   </div>
                 </div>
                 <div class="progressbar w-90 w-md-100">
                   <div class="music-bar d-flex align-items-center" id="progress">
                       <p class="currentTime text-white fs-small me-1 mb-0">00:00:00</p>
-                      <div class="length">
+                      <div class="length mx-2">
                         <div class="ball"></div>
                         <div class="currentTimeBar"></div>
                       </div>
@@ -111,13 +102,9 @@
                 <span class="volumeBtn text-greyLight cursor-pointer p-2">
                   <i class="fa-solid fa-volume-high"></i>
                 </span>
-                  <div class="dropdown dropdown-menu-sm-end cursor-pointer ms-4">
-                    <span class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="fa-solid fa-list"></i>
-                    </span>
-                  <ul class="dropdown-menu playlists vw-100 vw-md-25" aria-labelledby="dropdownMenuButton1">
-                    <li>還沒有歌單呢</li>
-                  </ul>
+                <span class="playListBtn cursor-pointer ms-4">
+                  <i class="fa-solid fa-list"></i>
+                </span>
                 </div>
               </div>
           </div>

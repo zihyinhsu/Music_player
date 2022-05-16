@@ -1,5 +1,4 @@
 import "./assets/style/all.scss";
-import "bootstrap/js/dist/dropdown";
 import {throttle} from 'lodash'
 import variables,* as dom from './assets/methods/dom';
 import {mouseControl} from './assets/methods/progressBar';
@@ -53,10 +52,9 @@ dom.random.addEventListener("click", ()=>{
   }
   // 假如亂數播到歌單最後一首，就回到上一首
   if( variables.presentSongIndex === variables.songsListId.length ){
-    dom.repeatPlayList.click();
+    variables.player.previousVideo();
   }
 })
-//
 
 // 歌曲播放循環控制
 dom.songRepeatController.addEventListener('click', () => {
@@ -127,7 +125,7 @@ dom.volume.addEventListener("change", () => {
 });
 
 // hover 顯示 音量條
-dom.volumeBtn.addEventListener("mouseover", ()=>{ dom.volume.classList.remove('d-none'); })
+dom.volumeBtn.addEventListener("mouseenter", ()=>{ dom.volume.classList.remove('d-none'); })
 
 // hover 隱藏 音量條
 dom.volume.addEventListener("mouseout", ()=>{ dom.volume.classList.add('d-none'); })
@@ -145,14 +143,15 @@ dom.inputInfo.addEventListener('input',throttle(function () {
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
-  let newSongsListName = [];
+  dom.playListBtn.click();
+  let songsListLiId = [];
   let newSongsListId = [];
-  if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
+  if ((e.target.nodeName === 'DIV'||e.target.nodeName === 'A') && e.target.dataset.disabled === 'false') {
     variables.songListLi.forEach((item) => {
-      newSongsListName.push(item.textContent);
+      songsListLiId.push(item.dataset.vid);
     });
     variables.songsList.forEach((item) => {
-      const index = newSongsListName.indexOf(item.snippet.title);
+      const index = songsListLiId.indexOf(item.snippet.resourceId.videoId);
       if (item.snippet.resourceId?.videoId) {
         newSongsListId.splice(index ,0 ,item.snippet.resourceId.videoId)
       }
@@ -170,6 +169,7 @@ dom.playlists.addEventListener("click", (e) => {
         }
       }
     });
+    showSongList();
     showSongImg();
     const songListIndex = Number(e.target.dataset.index);
     setTimeout(() => {
@@ -178,6 +178,7 @@ dom.playlists.addEventListener("click", (e) => {
     variables.isSearch = false;
   } else {return}
 })
+
 // 點擊搜尋播放
 dom.searchResults.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A') {
@@ -192,4 +193,11 @@ dom.searchResults.addEventListener("click", (e) => {
 
 dom.functionBar.addEventListener('click',()=>{
   dom.searchResults.classList.add('d-none');
+})
+
+// 歌單滑入滑出
+dom.playListBtn.addEventListener('click',()=>{
+  variables.isShowPlaylists = !variables.isShowPlaylists
+    dom.playlists.classList.toggle('end-n100')
+    dom.playlists.classList.toggle('end-0')
 })

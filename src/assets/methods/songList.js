@@ -16,8 +16,17 @@ export function songIdMatchIndex() {
 export function showSongList() {
   let result = "";
   variables.songsList.forEach((i, index) => {
-    result += `<li draggable="true"><a class="songList dropdown-item d-inline-block text-truncate" 
-    data-index=${index} data-vid=${i.snippet.resourceId.videoId} href="#">${i.snippet.title}</a></li>`;
+    result += `<li draggable="true">
+      <a class="songList d-flex justify-content-md-between align-items-center" 
+      data-index=${index} data-vid=${i.snippet.resourceId.videoId} href="#">
+      <div class="d-flex align-items-center w-70 w-md-60">
+        <div class="px-3">${index + 1}</div> 
+        <img class="albumImg p-2" src="${i.snippet.thumbnails.high.url}">
+        <div class="p-2 text-truncate">${i.snippet.title}</div>
+      </div>
+      <div class="me-md-5 text-truncate">${i.snippet.videoOwnerChannelTitle}</div>
+      </a>
+      </li>`;
   });
   dom.playlists.innerHTML = result;
   variables.songListLi = document.querySelectorAll(".songList");

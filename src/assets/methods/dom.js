@@ -1,5 +1,6 @@
 const tag = document.createElement("script");
-const cd = document.querySelector(".cdPlayer img");
+const cdPlayerImg = document.querySelector(".cdPlayer img");
+const albumPlayerImg = document.querySelector(".albumPlayer img");
 const firstScriptTag = document.getElementsByTagName("script")[0];
 const play = document.querySelector(".play");
 const pause = document.querySelector(".pause");
@@ -16,7 +17,7 @@ const playlists = document.querySelector(".playlists");
 const repeatPlayList = document.querySelector(".repeatPlayList");
 const length = document.querySelector(".length");
 const currentTimeBar = document.querySelector('.currentTimeBar')
-const songImg = document.querySelector('.songImg');
+const playListBtn = document.querySelector('.playListBtn');
 const albumImg = document.querySelector('.albumImg');
 const loading = document.querySelector('.loading');
 const songTitle = document.querySelector('.songTitle');
@@ -27,7 +28,8 @@ const functionBar = document.querySelector('.functionBar');
 export {
     tag,
     firstScriptTag,
-    cd, 
+    cdPlayerImg,
+    albumPlayerImg, 
     play,
     pause,
     forward,
@@ -43,7 +45,7 @@ export {
     repeatPlayList,
     length,
     currentTimeBar,
-    songImg,
+    playListBtn,
     albumImg,
     loading,
     songTitle,
@@ -75,6 +77,8 @@ let presentSongIndex = 0;
 let isSearch = false;
 let songControlCounter = 0;
 let playListLoopPlay = false;
+let isShowPlaylists = true;
+let playListAlbum = [];
 
 export default{
     player,
@@ -97,5 +101,7 @@ export default{
     presentSongIndex,
     isSearch,
     songControlCounter,
-    playListLoopPlay
+    playListLoopPlay,
+    isShowPlaylists,
+    playListAlbum
 }

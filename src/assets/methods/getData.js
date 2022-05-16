@@ -9,10 +9,12 @@ export function setPlayer(){
     window.YT.ready(function onYouTubeIframeAPIReady(id) {
         variables.player = new YT.Player("player", {
           videoId: id,
-          width: 0,   
-          height: 0,
           playerVars: {
-            loop: 1,     // 重覆播放 1 不重複播放 0
+            controls: 0,            // 顯示播放器
+            showinfo: 0,            // 隱藏影片標題
+            modestbranding: 0,      // 隱藏YouTube Logo
+            loop: 1,
+            autohide: 1             // 影片播放時，隱藏影片控制列
           },
           events: {
             onReady: onPlayerReady,
@@ -50,7 +52,10 @@ export function setPlayer(){
       getBar();
     } else if (e.data == YT.PlayerState.PLAYING) {
       songIdMatchIndex();
-      dom.cd.classList.add("cd");
+      dom.cdPlayerImg.classList.add("cd");
+      // setTimeout(()=>{
+      //   dom.albumPlayerImg.classList.add("cd");
+      // },1000)
       variables.player.setSize(0, 0);
       // play & pause 按鈕切換
       dom.play.classList.add('d-none');
@@ -67,7 +72,10 @@ export function setPlayer(){
         }
       }
     } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
-      dom.cd.classList.remove("cd");
+      dom.cdPlayerImg.classList.remove("cd");
+      // setTimeout(()=>{
+      //   dom.albumPlayerImg.classList.remove("cd");
+      // },1000)
     }
     // 單曲循環
     if (e.data === YT.PlayerState.ENDED && variables.playListLoopPlay === null){

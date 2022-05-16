@@ -37,7 +37,6 @@ export function showSongImg(dataList = variables.songsList){
       }
     }); 
     songImgData.forEach( item =>{ songImgArr.push(item.url) });
-    dom.songImg.src = `${songImgArr[variables.presentSongIndex]}`;
     dom.albumImg.src = `${songImgArr[variables.presentSongIndex]}`;
   }
   

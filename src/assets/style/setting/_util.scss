@@ -12,6 +12,13 @@
     width: 60px;
   }
 }
+.cdPlayer img{
+  height: 60px;
+  width: 60px;
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+}
 .cd{
   animation: rounded 5s infinite linear;
 }
@@ -23,6 +30,10 @@
     100%{
     transform: rotate(-360deg);
     }
+}
+
+.playlists{
+  background: linear-gradient(360deg, #50455F 14.31%, #01393F 100%);
 }
 
 .cursor-pointer{
@@ -90,6 +101,7 @@ iframe{
 }
 
 .musicPlaying {
+  color: $dark !important;
   background: $light !important;
 }
 
@@ -102,8 +114,17 @@ iframe{
   opacity:0.5 !important;
 }
 
-// breakpoint
-@include media-breakpoint-up(md) {
-  
+.marquee{
+  width: 100%;
+  @include media-breakpoint-up(md) {
+    width: 200px;
+  }
 }
 
+.songList{
+  color: $white;
+  &:hover{
+    background-color: $light;
+    color: $dark;
+  }
+}
