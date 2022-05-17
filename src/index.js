@@ -124,7 +124,7 @@ dom.volumeBtn.addEventListener("mouseenter", () => { dom.volume.classList.remove
 // hover 隱藏 音量條
 dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none'); })
 
-// 監聽搜尋的值並覆蓋現有歌單
+// 監聽搜尋的值
 dom.inputInfo.addEventListener('input', throttle(function () {
   if (dom.inputInfo.value === '') {
     dom.searchResults.classList.add('d-none');
@@ -139,35 +139,35 @@ dom.inputInfo.addEventListener('input', throttle(function () {
 dom.playlists.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
     dom.playListBtn.click();
-  let newSongsListId = [];
-  let newSongQueue = [];
-  let newSongsList = [];
-  const titles = document.querySelectorAll('.title')
-  titles.forEach((item) => {
-    newSongQueue.push(item.innerText)
-  });
-  let indexQueue = [];
-  variables.songsList.forEach((item) => {
-    const index = newSongQueue.indexOf(item.snippet.title);
-    indexQueue.push(index)
-  });
-  indexQueue.forEach((item)=>{
-    newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
-    newSongsList.push(variables.songsList[item]);
-  })
-  variables.songsList = newSongsList;
-  variables.songsListId = newSongsListId;
-  showSongList();
-  showSongImg();
-  const songListIndex = Number(e.target.dataset.index);
-  variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-  setTimeout(()=>{
-    variables.player.pauseVideo()
-  }, 300)
-  setTimeout(() => {
+    let newSongsListId = [];
+    let newSongQueue = [];
+    let newSongsList = [];
+    const titles = document.querySelectorAll('.title')
+    titles.forEach((item) => {
+      newSongQueue.push(item.innerText)
+    });
+    let indexQueue = [];
+    variables.songsList.forEach((item) => {
+      const index = newSongQueue.indexOf(item.snippet.title);
+      indexQueue.push(index)
+    });
+    indexQueue.forEach((item)=>{
+      newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
+      newSongsList.push(variables.songsList[item]);
+    })
+    variables.songsList = newSongsList;
+    variables.songsListId = newSongsListId;
+    showSongList();
+    showSongImg();
+    const songListIndex = Number(e.target.dataset.index);
     variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-  }, 800)
-  variables.isSearch = false;
+    setTimeout(()=>{
+      variables.player.pauseVideo()
+    }, 300)
+    setTimeout(() => {
+      variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+    }, 800)
+    variables.isSearch = false;
   }
 })
 
@@ -180,6 +180,7 @@ dom.searchResults.addEventListener("click", (e) => {
     showSongImg(variables.searchResult);
     addOrRemoveMusicPlaying(variables.searchResultLi);
     variables.isSearch = true;
+    dom.searchResults.classList.add('d-none');
   }
 })
 
