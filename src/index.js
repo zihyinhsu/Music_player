@@ -143,7 +143,8 @@ dom.inputInfo.addEventListener('input', throttle(function () {
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
-  dom.playListBtn.click();
+  if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
+    dom.playListBtn.click();
   let newSongsListId = [];
   let newSongQueue = [];
   let newSongsList = [];
@@ -173,7 +174,7 @@ dom.playlists.addEventListener("click", (e) => {
     variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
   }, 800)
   variables.isSearch = false;
-
+  }
 })
 
 // 點擊搜尋播放

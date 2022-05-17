@@ -20,12 +20,12 @@ export function showSongList() {
     result += `<li draggable="true">
     <a class="songList d-flex justify-content-md-between align-items-center" 
     ${dataProperty} href="#">
-      <div class="d-flex align-items-center w-70 w-md-60 pointEvents"${dataProperty}>
-        <div class="px-3 pointEvents"${dataProperty}>${index + 1}</div> 
-        <img class="albumImg p-2" src="${i.snippet.thumbnails.high.url}"${dataProperty}>
-        <div class="title p-2 text-truncate pointEvents"${dataProperty}>${i.snippet.title}</div>
+      <div class="d-flex align-items-center w-70 w-md-60 pointEvents">
+        <div class="px-3 pointEvents">${index + 1}</div> 
+        <img class="albumImg p-2" src="${i.snippet.thumbnails.high.url}">
+        <div class="title p-2 text-truncate pointEvents">${i.snippet.title}</div>
       </div>
-      <div class="me-md-5 text-truncate pointEvents"${dataProperty}>
+      <div class="me-md-5 text-truncate pointEvents">
       ${i.snippet.videoOwnerChannelTitle}
       </div>
     </a>
@@ -33,6 +33,14 @@ export function showSongList() {
   });
   dom.playlists.innerHTML = result;
   variables.songListLi = document.querySelectorAll(".songList");
+  variables.songListLi.forEach((i) => {
+    i.setAttribute('data-disabled', true);
+    i.setAttribute('style', 'cursor: not-allowed;');
+    setTimeout(() => {
+      i.setAttribute('data-disabled', false);
+      i.removeAttribute('style', 'cursor: not-allowed;');
+    },300);
+  })
   variables.songListLength = variables.songListLi.length;
   watchPlaylistForDragAndDrop()
 }
