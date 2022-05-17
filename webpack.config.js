@@ -1,7 +1,8 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { resolve } = require('path');
+
 // node 中與路徑的相關套件
 module.exports = {
   entry: './src/index.js',

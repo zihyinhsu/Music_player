@@ -60,12 +60,6 @@ dom.random.addEventListener("click", () => {
 dom.songRepeatController.addEventListener('click', () => {
   variables.songControlCounter++;
   const controlNum = variables.songControlCounter % 3;
-  let dataList = null;
-  if (variables.isSearch === true) {
-    dataList = variables.searchResult;
-  } else {
-    dataList = variables.songsListId
-  }
   switch (controlNum) {
     // 取消全歌循環
     case 0:
@@ -195,7 +189,6 @@ dom.functionBar.addEventListener('click', () => {
 
 // 歌單滑入滑出
 dom.playListBtn.addEventListener('click', () => {
-  variables.isShowPlaylists = !variables.isShowPlaylists
   dom.playlists.classList.toggle('end-n100')
   dom.playlists.classList.toggle('end-0')
 })

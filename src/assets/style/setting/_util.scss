@@ -1,9 +1,3 @@
-.searchResult{
-  max-height: 300px;
-  @include media-breakpoint-up(md) {
-    max-height: 400px;
-  }
-}
 .albumImg{
   display: none;
   @include media-breakpoint-up(md) {
@@ -19,40 +13,36 @@
     display: none;
   }
 }
+
 .cd{
   animation: rounded 5s infinite linear;
 }
-.pointEvents {
-  pointer-events: none;
-}
+
 @keyframes rounded{
-    0%{
-    transform:rotate(0deg);
-    }
-    100%{
-    transform: rotate(-360deg);
-    }
+  0%{
+  transform:rotate(0deg);
+  }
+  100%{
+  transform: rotate(-360deg);
+  }
 }
 
 .playlists{
   background: linear-gradient(360deg, #50455F 14.31%, #01393F 100%);
+  .songList{
+    color: $white;
+    &:hover{
+      background-color: $light;
+      color: $dark;
+    }
+  }
 }
 
-.cursor-pointer{
-  cursor: pointer;
-}
-
-.flex-grow-1{
-  flex-grow:1;
-}
-
-.fs-small{
-  font-size:12px;
-}
-
-iframe{
-  width: 0px;
-  height: 0px;
+.searchResult{
+  max-height: 300px;
+  @include media-breakpoint-up(md) {
+    max-height: 400px;
+  }
 }
 
 .music-bar{
@@ -95,13 +85,6 @@ iframe{
   }
 }
 
-.object-fit-cover{
-  object-fit: cover;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .musicPlaying {
   color: $dark !important;
   background: $light !important;
@@ -118,15 +101,51 @@ iframe{
 
 .marquee{
   width: 100%;
+  height:24px;
+  white-space: nowrap;
+  overflow: hidden;
   @include media-breakpoint-up(md) {
-    width: 200px;
+    width: 220px;
+  }
+  .songTitle{
+    display: inline-block;
+    animation: marquee 10s linear infinite;
   }
 }
 
-.songList{
-  color: $white;
-  &:hover{
-    background-color: $light;
-    color: $dark;
+@keyframes marquee {
+  0%   { 
+    transform: translate(0); 
   }
+  100% { 
+    transform: translate(-100%); 
+  }
+}
+
+.pointEvents {
+  pointer-events: none;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.flex-grow-1{
+  flex-grow:1;
+}
+
+.fs-small{
+  font-size:12px;
+}
+
+.object-fit-cover{
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+iframe{
+  width: 0px;
+  height: 0px;
 }

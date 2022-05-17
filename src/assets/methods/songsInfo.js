@@ -1,6 +1,6 @@
 import variables,* as dom from './dom';
 
-// 背景插入歌曲圖片
+// 歌曲圖片切換
 export function showSongImg(dataList = variables.songsList){
     let songImgData = [];
     let songImgArr = [];

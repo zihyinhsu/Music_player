@@ -25,7 +25,7 @@ export function showSongList() {
         <img class="albumImg p-2" src="${i.snippet.thumbnails.high.url}">
         <div class="title p-2 text-truncate pointEvents">${i.snippet.title}</div>
       </div>
-      <div class="me-md-5 text-truncate pointEvents">
+      <div class="ms-3 ms-md-0 me-md-5 text-truncate pointEvents">
       ${i.snippet.videoOwnerChannelTitle}
       </div>
     </a>
@@ -79,7 +79,6 @@ dataList.forEach((i,index) => {
 export function songListSort(){
   let shuffle = []
   variables.songsList.forEach((i, index) => {
-  // 因為歌單的來源有兩種search與playlist，兩包的資料不太一樣。
   if (i.snippet.resourceId.videoId !== undefined) {
     const songIndex = variables.songsListId.indexOf(i.snippet.resourceId.videoId);
     shuffle.splice(songIndex, 0, variables.songsList[index])

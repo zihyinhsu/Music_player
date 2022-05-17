@@ -44,8 +44,6 @@ export function setPlayer(){
     if (e.data == -1) {
       variables.currentPlaySongId = variables.player.getVideoData().video_id;
       variables.presentSongIndex = variables.player.getPlaylistIndex();
-      getSongDurationTime();
-      getSongCurrentTime();
       }
     if(e.data == YT.PlayerState.CUED){
       variables.songsListId = variables.player.getPlaylist();
@@ -55,10 +53,6 @@ export function setPlayer(){
       getSongDurationTime();
       getSongCurrentTime();
       dom.cdPlayerImg.classList.add("cd");
-      // setTimeout(()=>{
-      //   dom.albumPlayerImg.classList.add("cd");
-      // },1000)
-      variables.player.setSize(0, 0);
       // play & pause 按鈕切換
       dom.play.classList.add('d-none');
       dom.pause.classList.remove('d-none');
@@ -75,9 +69,6 @@ export function setPlayer(){
       }
     } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
       dom.cdPlayerImg.classList.remove("cd");
-      // setTimeout(()=>{
-      //   dom.albumPlayerImg.classList.remove("cd");
-      // },1000)
     }
     // 單曲循環
     if (e.data === YT.PlayerState.ENDED && variables.playListLoopPlay === null){
@@ -133,7 +124,7 @@ export function setPlayer(){
       variables.searchResult = res.data.items;
       showSearchSongList();
       })
-      .catch((err) => {
-        console.log(err);
-      });
+    .catch((err) => {
+      console.log(err);
+    });
   }
