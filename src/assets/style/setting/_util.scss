@@ -39,9 +39,15 @@
 }
 
 .searchResult{
-  max-height: 300px;
-  @include media-breakpoint-up(md) {
-    max-height: 400px;
+  background: linear-gradient(360deg, #50455F 14.31%, #01393F 100%);
+  .searchResultItem{
+    border-radius: 8px;
+    background-color: rgba($white,0.3);
+    color: $white;
+    &:hover{
+      background-color: $light;
+      color: $dark;
+    }
   }
 }
 

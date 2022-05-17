@@ -3,6 +3,7 @@ const cdPlayerImg = document.querySelector(".cdPlayer img");
 const firstScriptTag = document.getElementsByTagName("script")[0];
 const play = document.querySelector(".play");
 const pause = document.querySelector(".pause");
+const search = document.querySelector(".search");
 const forward = document.querySelector(".forward");
 const backward = document.querySelector(".backward");
 const repeat = document.querySelector(".repeat");
@@ -23,13 +24,13 @@ const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
 const searchResults = document.querySelector('.searchResult');
 const songRepeatController = document.querySelector('.songRepeatController');
-const functionBar = document.querySelector('.functionBar');
 export {
     tag,
     firstScriptTag,
     cdPlayerImg,
     play,
     pause,
+    search,
     forward,
     backward,
     repeat,
@@ -49,8 +50,7 @@ export {
     songTitle,
     author,
     searchResults,
-    songRepeatController,
-    functionBar
+    songRepeatController
 };
 
 // variables
@@ -60,7 +60,6 @@ let songsList = [];
 let songsListId = [];
 let searchResult = [];
 let searchResultId = [];
-let searchResultLi = [];
 let songListLi = [];
 let songTitleArr = [];
 let songAuthorArr = [];
@@ -83,7 +82,6 @@ export default{
     searchResult,
     songsListId,
     searchResultId,
-    searchResultLi,
     songListLi,
     songTitleArr,
     songAuthorArr,

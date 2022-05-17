@@ -1,5 +1,4 @@
 import "./assets/style/all.scss";
-import { throttle } from 'lodash'
 import variables, * as dom from './assets/methods/dom';
 import { mouseControl } from './assets/methods/progressBar';
 import { showSongImg, showSongInfo } from './assets/methods/songsInfo';
@@ -124,16 +123,14 @@ dom.volumeBtn.addEventListener("mouseenter", () => { dom.volume.classList.remove
 // hover 隱藏 音量條
 dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none'); })
 
-// 監聽搜尋的值
-dom.inputInfo.addEventListener('input', throttle(function () {
+dom.search.addEventListener('click', () => {
   if (dom.inputInfo.value === '') {
     dom.searchResults.classList.add('d-none');
   } else {
     searchSong();
     variables.isSearch = true;
   }
-}, 2000))
-
+})
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
@@ -175,17 +172,13 @@ dom.playlists.addEventListener("click", (e) => {
 dom.searchResults.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A') {
     const songListIndex = Number(e.target.dataset.index);
+    console.log(variables.searchResultId, songListIndex)
     variables.player.loadPlaylist(variables.searchResultId, songListIndex, 0);
     showSongInfo(variables.searchResult);
     showSongImg(variables.searchResult);
-    addOrRemoveMusicPlaying(variables.searchResultLi);
     variables.isSearch = true;
     dom.searchResults.classList.add('d-none');
   }
-})
-
-dom.functionBar.addEventListener('click', () => {
-  dom.searchResults.classList.add('d-none');
 })
 
 // 歌單滑入滑出

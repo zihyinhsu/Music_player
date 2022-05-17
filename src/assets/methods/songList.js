@@ -50,14 +50,29 @@ export function showSearchSongList() {
   if(dom.inputInfo.value !== ''){
     let result = "";
     variables.searchResultId = [];
-    variables.searchResult.forEach((i, index) => {
-      result += `<li draggable="true"><a class="searchResultItem dropdown-item d-inline-block text-truncate p-2" data-index=${index} data-vid=${i.id.videoId} href="#">${i.snippet.title}</a></li>`
-      variables.searchResultId.push(i.id.videoId)
+    variables.searchResult.forEach((i,index) => {
+      if(i.id.videoId === undefined){
+        variables.searchResult.splice(index,1)
+      }
     });
-    dom.searchResults.innerHTML = result;
-    variables.searchResultLi = document.querySelectorAll(".searchResultItem");
-    dom.searchResults.classList.remove('d-none');
+    variables.searchResult.forEach((i,index)=>{
+      result += `<li draggable="true" class="col-md-4 mb-3">
+      <a class="searchResultItem d-flex justify-content-md-between align-items-center" href="#" data-index=${index} data-vid=${i.id.videoId}>
+        <div class="d-flex align-items-center w-100 w-md-75 p-4 pointEvents">
+          <img class="me-4" src="${i.snippet.thumbnails.high.url}" style="height: 60px;width: 60px;">
+          <div class="w-80 w-md-100">
+            <div class="text-truncate">${i.snippet.title}</div>
+            <div class="text-truncate">${i.snippet.channelTitle}</div>
+          </div>
+        </div>
+      </a>
+      </li>`
+      variables.searchResultId.push(i.id.videoId)
+    })
+    dom.searchResults.innerHTML = `<div class="container"><h4 class="text-white mx-3 my-4">熱門搜尋結果</h4>
+    <div class="row d-flex align-items-center">${result}</div></div>`;
     variables.player.loadPlaylist(variables.searchResultId, 0, 0);
+    dom.searchResults.classList.remove('d-none');
     setTimeout(() => {
     variables.player.pauseVideo();
     }, 500);

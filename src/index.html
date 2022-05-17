@@ -39,15 +39,15 @@
         <form class="position-relative w-100" onkeypress="if(event.keyCode == 13){event.preventDefault()}">
           <div class="form-group w-100">
             <input type="search" class="inputInfo form-control position-relative bg-dark border border-white text-white" style="box-shadow:none;">
-            <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-92.5 translate-middle text-white"></i>
+            <i class="search fa-solid fa-magnifying-glass position-absolute top-50 start-92.5 translate-middle text-white cursor-pointer"></i>
           </div>
-          <ul class="searchResult position-absolute bg-white rounded-3 overflow-auto w-100 z-index-3"></ul>
         </form>
       </div>
       <div class="screen position-relative flex-grow-1 w-md-80 overflow-hidden">
         <div class="position-absolute w-100 h-100">
           <div class="position-absolute bg-light w-100 h-100 pointEvents"  id="player"></div>
-          <ul class="playlists bg-white position-absolute overflow-auto end-n100 w-100 h-100 transition-1"></ul>
+          <ul class="searchResult position-absolute overflow-auto w-100 h-100 transition-1"></ul>
+          <ul class="playlists position-absolute overflow-auto end-n100 w-100 h-100 transition-1"></ul>
         </div>
       </div>
     </div>
