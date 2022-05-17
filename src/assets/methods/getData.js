@@ -80,15 +80,7 @@ export function setPlayer(){
   
   // 取得歌曲資料 - 自訂歌單
   export  function getSongData() {
-    axios.get('https://www.googleapis.com/youtube/v3/playlistItems',
-      {
-      params: {
-      part: 'snippet,contentDetails',// 必填，把需要的資訊列出來
-      playlistId: variables.playId,// 播放清單的id
-      maxResults: 10,// 預設為五筆資料，可以設定1~50
-      key: process.env.KEY
-      }
-      })
+    axios.get('https://obscure-dawn-53119.herokuapp.com')
       .then(res => {
         variables.songsList = res.data.items; 
         showSongList();
