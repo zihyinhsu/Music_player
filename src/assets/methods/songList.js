@@ -14,31 +14,34 @@ export function songIdMatchIndex() {
 
 // 顯示歌單
 export function showSongList() {
-  let result = "";
+  let result = '';
   variables.songsList.forEach((i, index) => {
+    const dataProperty = `data-index=${index} data-vid=${i.snippet.resourceId.videoId}`;
     result += `<li draggable="true">
-      <a class="songList d-flex justify-content-md-between align-items-center" 
-      data-index=${index} data-vid=${i.snippet.resourceId.videoId} href="#">
-      <div class="d-flex align-items-center w-70 w-md-60">
-        <div class="px-3">${index + 1}</div> 
+    <a class="songList d-flex justify-content-md-between align-items-center" 
+    ${dataProperty} href="#">
+      <div class="d-flex align-items-center w-70 w-md-60 pointEvents">
+        <div class="px-3 pointEvents">${index + 1}</div> 
         <img class="albumImg p-2" src="${i.snippet.thumbnails.high.url}">
-        <div class="p-2 text-truncate">${i.snippet.title}</div>
+        <div class="title p-2 text-truncate pointEvents">${i.snippet.title}</div>
       </div>
-      <div class="me-md-5 text-truncate">${i.snippet.videoOwnerChannelTitle}</div>
-      </a>
-      </li>`;
+      <div class="me-md-5 text-truncate pointEvents">
+      ${i.snippet.videoOwnerChannelTitle}
+      </div>
+    </a>
+    </li>`;
   });
   dom.playlists.innerHTML = result;
   variables.songListLi = document.querySelectorAll(".songList");
-  variables.songListLength = variables.songListLi.length;
   variables.songListLi.forEach((i) => {
-    i.setAttribute('data-disabled', true)
-    i.setAttribute('style', 'cursor: not-allowed;')
+    i.setAttribute('data-disabled', true);
+    i.setAttribute('style', 'cursor: not-allowed;');
     setTimeout(() => {
-      i.setAttribute('data-disabled', false)
-      i.removeAttribute('style', 'cursor: not-allowed;')  
+      i.setAttribute('data-disabled', false);
+      i.removeAttribute('style', 'cursor: not-allowed;');
     },300);
   })
+  variables.songListLength = variables.songListLi.length;
   watchPlaylistForDragAndDrop()
 }
 

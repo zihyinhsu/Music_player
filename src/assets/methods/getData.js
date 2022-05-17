@@ -52,6 +52,8 @@ export function setPlayer(){
       getBar();
     } else if (e.data == YT.PlayerState.PLAYING) {
       songIdMatchIndex();
+      getSongDurationTime();
+      getSongCurrentTime();
       dom.cdPlayerImg.classList.add("cd");
       // setTimeout(()=>{
       //   dom.albumPlayerImg.classList.add("cd");
