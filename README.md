@@ -22,16 +22,17 @@
 
 ## 作品簡介
 ### 基本介面
-![](https://i.imgur.com/TKxAuFW.jpg)
+![](https://i.imgur.com/KFPhXQc.jpg)
 
 ### 預設滑動歌單 by ZY
 
 ![](https://i.imgur.com/wI7iGJH.png)
 
+### 搜尋歌單
+![](https://i.imgur.com/RpfoD4B.png)
+
 ### 歌單拖曳功能 by 群嘉
 
 ![](https://i.imgur.com/D3mTX8K.png)
 
-### 基本搜尋功能 with autoComplete
 
-![](https://i.imgur.com/TehOPjG.jpg)
