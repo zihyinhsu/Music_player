@@ -71,7 +71,7 @@ export function showSearchSongList() {
     })
     dom.searchResults.innerHTML = `<div class="container"><h4 class="text-white mx-3 my-4">熱門搜尋結果</h4>
     <div class="row d-flex align-items-center">${result}</div></div>`;
-    variables.player.loadPlaylist(variables.searchResultId, 0, 0);
+    // variables.player.loadPlaylist(variables.searchResultId, 0, 0);
     dom.searchResults.classList.remove('d-none');
     setTimeout(() => {
     variables.player.pauseVideo();

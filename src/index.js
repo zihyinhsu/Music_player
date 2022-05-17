@@ -2,7 +2,7 @@ import "./assets/style/all.scss";
 import variables, * as dom from './assets/methods/dom';
 import { mouseControl } from './assets/methods/progressBar';
 import { showSongImg, showSongInfo } from './assets/methods/songsInfo';
-import { songListSort, showSongList, addOrRemoveMusicPlaying } from './assets/methods/songList';
+import { songListSort, showSongList } from './assets/methods/songList';
 import { getSongData, searchSong } from './assets/methods/getData';
 
 dom.tag.src = "https://www.youtube.com/iframe_api";
@@ -172,7 +172,6 @@ dom.playlists.addEventListener("click", (e) => {
 dom.searchResults.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A') {
     const songListIndex = Number(e.target.dataset.index);
-    console.log(variables.searchResultId, songListIndex)
     variables.player.loadPlaylist(variables.searchResultId, songListIndex, 0);
     showSongInfo(variables.searchResult);
     showSongImg(variables.searchResult);

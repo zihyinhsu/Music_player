@@ -64,7 +64,6 @@ export function setPlayer(){
         if(variables.songControlCounter !== 2){
           showSongInfo(variables.searchResult);
           showSongImg(variables.searchResult);
-          addOrRemoveMusicPlaying(variables.searchResultLi);
         }
       }
     } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
