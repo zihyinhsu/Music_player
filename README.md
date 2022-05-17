@@ -3,7 +3,8 @@
 
 ## 專案說明
 > Demo Website : https://zihyinhsu.github.io/Music_player/#
-UI Design By Natsu
+
+> UI Design By Natsu
 
 一款串接自 Youtube API 的 音樂播放器，同時支援搜尋功能。
 
