@@ -53,7 +53,7 @@ dom.random.addEventListener("click", () => {
   if (variables.presentSongIndex === variables.songsListId.length) {
     variables.player.previousVideo();
   }
-})
+});
 
 // 歌曲播放循環控制
 dom.songRepeatController.addEventListener('click', () => {
@@ -92,21 +92,21 @@ dom.songRepeatController.addEventListener('click', () => {
       variables.player.loadPlaylist([variables.currentPlaySongId], variables.presentSongIndex);
       break;
   }
-})
+});
 
 // 快進10秒
 dom.forward.addEventListener("click", () => {
   let current = '';
   current = variables.player.getCurrentTime();
   variables.player.seekTo(current + 10);
-})
+});
 
 // 後退10秒
 dom.backward.addEventListener("click", () => {
   let current = '';
   current = variables.player.getCurrentTime();
   variables.player.seekTo(current - 10);
-})
+});
 
 // 滑鼠控制進度條
 dom.length.addEventListener("click", (e) => { mouseControl(e) })
@@ -118,10 +118,10 @@ dom.volume.addEventListener("change", () => {
 });
 
 // hover 顯示 音量條
-dom.volumeBtn.addEventListener("mouseenter", () => { dom.volume.classList.remove('d-none'); })
+dom.volumeBtn.addEventListener("mouseenter", () => { dom.volume.classList.remove('d-none'); });
 
 // hover 隱藏 音量條
-dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none'); })
+dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none'); });
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
@@ -132,7 +132,7 @@ dom.playlists.addEventListener("click", (e) => {
     let newSongsList = [];
     const titles = document.querySelectorAll('.title')
     titles.forEach((item) => {
-      newSongQueue.push(item.innerText)
+      newSongQueue.push(item.innerText);
     });
     let indexQueue = [];
     variables.songsList.forEach((item) => {
@@ -140,7 +140,11 @@ dom.playlists.addEventListener("click", (e) => {
       indexQueue.push(index)
     });
     indexQueue.forEach((item)=>{
-      newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
+      if(variables.songsList[item].id.videoId){
+        newSongsListId.push(variables.songsList[item].id.videoId);
+      }else{
+        newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
+      }
       newSongsList.push(variables.songsList[item]);
     })
     variables.songsList = newSongsList;
@@ -151,13 +155,13 @@ dom.playlists.addEventListener("click", (e) => {
     variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
     setTimeout(()=>{
       variables.player.pauseVideo()
-    }, 300)
+    }, 300);
     setTimeout(() => {
       variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-    }, 800)
+    }, 800);
     variables.isSearch = false;
   }
-})
+});
 
 dom.search.addEventListener('click', () => {
   if (dom.inputInfo.value === '') {
@@ -166,25 +170,25 @@ dom.search.addEventListener('click', () => {
     searchSong();
     variables.isSearch = true;
   }
-})
+});
 
 // 點擊搜尋播放
 dom.searchResults.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A') {
     const songListIndex = Number(e.target.dataset.index);
-    variables.presentSongIndex = songListIndex
-    variables.player.loadPlaylist(variables.searchResultId, songListIndex, 0);
-    showSongInfo(variables.searchResult);
-    showSongImg(variables.searchResult);
-    variables.isSearch = true;
-    dom.searchResults.classList.add('d-none');
-    // variables.songsList.unshift(variables.searchResult[e.target.dataset.index])
+    variables.presentSongIndex = songListIndex;
+    variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
+    variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
+    variables.player.loadPlaylist(variables.songsListId, 0, 0);
     showSongList()
+    // 歌曲成功插播至原歌單之後，就把 isSearch 關掉
+    variables.isSearch = false;
+    dom.searchResults.classList.add('d-none');
   }
-})
+});
 
 // 歌單滑入滑出
 dom.playListBtn.addEventListener('click', () => {
-  dom.playlists.classList.toggle('end-n100')
-  dom.playlists.classList.toggle('end-0')
-})
+  dom.playlists.classList.toggle('end-n100');
+  dom.playlists.classList.toggle('end-0');
+});

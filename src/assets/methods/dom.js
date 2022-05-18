@@ -24,6 +24,7 @@ const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
 const searchResults = document.querySelector('.searchResult');
 const songRepeatController = document.querySelector('.songRepeatController');
+
 export {
     tag,
     firstScriptTag,
@@ -74,6 +75,7 @@ let presentSongIndex = 0;
 let isSearch = false;
 let songControlCounter = 0;
 let playListLoopPlay = false;
+let deleteSong = null;
 
 export default{
     player,
@@ -95,5 +97,6 @@ export default{
     presentSongIndex,
     isSearch,
     songControlCounter,
-    playListLoopPlay
+    playListLoopPlay,
+    deleteSong
 }
