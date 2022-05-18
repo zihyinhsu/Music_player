@@ -75,9 +75,9 @@ export function showSearchSongList() {
     variables.searchResult.forEach((i,index)=>{
       result += `<li draggable="true" class="col-md-4 mb-3">
       <a class="searchResultItem d-flex justify-content-md-between align-items-center" href="#" data-index=${index} data-vid=${i.id.videoId}>
-        <div class="d-flex justify-content-between align-items-center w-100 p-4 pointEvents">
+        <div class="d-flex align-items-center w-100 p-4 pointEvents">
           <img class="me-4" src="${i.snippet.thumbnails.high.url}" style="height: 60px;width: 60px;">
-          <div class="text-truncate me-md-2">
+          <div class="text-truncate w-100 me-md-2">
             <div class="text-truncate">${i.snippet.title}</div>
             <div class="text-truncate">${i.snippet.channelTitle}</div>
           </div>

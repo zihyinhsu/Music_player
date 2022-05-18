@@ -25,10 +25,10 @@
 
 ### 預設滑動歌單 by ZY
 
-![](https://i.imgur.com/wI7iGJH.png)
+![](https://i.imgur.com/W4is2uz.png)
 
-### 搜尋歌單
-![](https://i.imgur.com/RpfoD4B.png)
+### 搜尋 與 加入 / 刪除歌單
+![](https://i.imgur.com/l9n0Fr4.png)
 
 ### 歌單拖曳功能 by 群嘉
 

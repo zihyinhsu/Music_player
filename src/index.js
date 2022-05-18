@@ -179,25 +179,23 @@ dom.search.addEventListener('click', () => {
 });
 
 // 點擊搜尋播放
-if(dom.inputInfo.value !== ''){
-  dom.searchResults.addEventListener("click", (e) => {
-    if (e.target.nodeName === 'A') {
-      const songListIndex = Number(e.target.dataset.index);
-      variables.presentSongIndex = songListIndex;
-      if(variables.songsListId.includes(variables.searchResult[e.target.dataset.index].id.videoId)){
-        return
-      } else {
-        variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
-        variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
-        variables.player.loadPlaylist(variables.songsListId, 0, 0);
-        showSongList()
-        // 歌曲成功插播至原歌單之後，就把 isSearch 關掉
-        variables.isSearch = false;
-        dom.searchResults.classList.add('d-none');
-      }
+dom.searchResults.addEventListener("click", (e) => {
+  if (e.target.nodeName === 'A') {
+    const songListIndex = Number(e.target.dataset.index);
+    variables.presentSongIndex = songListIndex;
+    if(variables.songsListId.includes(variables.searchResult[e.target.dataset.index].id.videoId)){
+      return
+    } else {
+      variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
+      variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
+      variables.player.loadPlaylist(variables.songsListId, 0, 0);
+      showSongList()
+      // 歌曲成功插播至原歌單之後，就把 isSearch 關掉
+      variables.isSearch = false;
+      dom.searchResults.classList.add('d-none');
     }
-  });
-}
+  }
+});
 
 // 歌單滑入滑出
 dom.playListBtn.addEventListener('click', () => {
