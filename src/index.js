@@ -166,6 +166,7 @@ dom.playlists.addEventListener("click", (e) => {
       variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
     }, 800);
     variables.isSearch = false;
+    dom.searchResults.classList.add('d-none');
   }
 });
 
