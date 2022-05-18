@@ -80,7 +80,7 @@ export function setPlayer(){
   
   // 取得歌曲資料 - 自訂歌單
   export  function getSongData() {
-    axios.get('https://obscure-dawn-53119.herokuapp.com')
+    axios.get('https://mighty-eyrie-61795.herokuapp.com/')
       .then(res => {
         variables.songsList = res.data.items; 
         showSongList();
