@@ -1,5 +1,6 @@
 import variables,* as dom from './dom';
-import {watchPlaylistForDragAndDrop} from  './dargAndDrop';
+var _ = require('lodash');
+import { watchPlaylistForDragAndDrop } from  './dargAndDrop';
 
 // 在播放狀態自動對照id與presentSongIndex
 export function songIdMatchIndex() {
@@ -16,7 +17,7 @@ export function songIdMatchIndex() {
 export function showSongList() {
   let result = '';
   variables.songsList.forEach((i, index) => {
-    const dataProperty = `data-index=${index} data-vid=${i.snippet.resourceId.videoId}`;
+    const dataProperty = `data-index=${index} data-vid=${i.snippet.resourceId?.videoId || i.id.videoId}`;
     result += `<li draggable="true">
     <a class="songList d-flex justify-content-md-between align-items-center" 
     ${dataProperty} href="#">
@@ -26,7 +27,7 @@ export function showSongList() {
         <div class="title p-2 text-truncate pointEvents">${i.snippet.title}</div>
       </div>
       <div class="ms-3 ms-md-0 me-md-5 text-truncate pointEvents">
-      ${i.snippet.videoOwnerChannelTitle}
+      ${i.snippet?.videoOwnerChannelTitle || i.snippet.channelTitle}
       </div>
     </a>
     </li>`;
@@ -71,10 +72,10 @@ export function showSearchSongList() {
     })
     dom.searchResults.innerHTML = `<div class="container"><h4 class="text-white mx-3 my-4">熱門搜尋結果</h4>
     <div class="row d-flex align-items-center">${result}</div></div>`;
-    // variables.player.loadPlaylist(variables.searchResultId, 0, 0);
     dom.searchResults.classList.remove('d-none');
+    variables.player.loadPlaylist(variables.searchResultId, 2, 0);
     setTimeout(() => {
-    variables.player.pauseVideo();
+      variables.player.pauseVideo();
     }, 500);
   }
 }

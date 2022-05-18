@@ -79,7 +79,7 @@ export function setPlayer(){
   
   // 取得歌曲資料 - 自訂歌單
   export  function getSongData() {
-    axios.get('https://obscure-dawn-53119.herokuapp.com/youtube/playListItems',
+    axios.get('https://protected-spire-65890.herokuapp.com/youtube/playListItems',
     {
       params: {
       part: "snippet,contentDetails", // 必填，把需要的資訊列出來
@@ -110,7 +110,7 @@ export function setPlayer(){
   
   // 搜尋功能
   export function searchSong() {
-    axios.get("https://obscure-dawn-53119.herokuapp.com/youtube/search", {
+    axios.get("https://protected-spire-65890.herokuapp.com/youtube/search", {
       params: {
         part: "snippet", // 必填，把需要的資訊列出來
         maxResults: 20, // 預設為五筆資料，可以設定1~50

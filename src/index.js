@@ -123,15 +123,6 @@ dom.volumeBtn.addEventListener("mouseenter", () => { dom.volume.classList.remove
 // hover 隱藏 音量條
 dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none'); })
 
-dom.search.addEventListener('click', () => {
-  if (dom.inputInfo.value === '') {
-    dom.searchResults.classList.add('d-none');
-  } else {
-    searchSong();
-    variables.isSearch = true;
-  }
-})
-
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
@@ -168,15 +159,27 @@ dom.playlists.addEventListener("click", (e) => {
   }
 })
 
+dom.search.addEventListener('click', () => {
+  if (dom.inputInfo.value === '') {
+    dom.searchResults.classList.add('d-none');
+  } else {
+    searchSong();
+    variables.isSearch = true;
+  }
+})
+
 // 點擊搜尋播放
 dom.searchResults.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A') {
     const songListIndex = Number(e.target.dataset.index);
+    variables.presentSongIndex = songListIndex
     variables.player.loadPlaylist(variables.searchResultId, songListIndex, 0);
     showSongInfo(variables.searchResult);
     showSongImg(variables.searchResult);
     variables.isSearch = true;
     dom.searchResults.classList.add('d-none');
+    // variables.songsList.unshift(variables.searchResult[e.target.dataset.index])
+    showSongList()
   }
 })
 

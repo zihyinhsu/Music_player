@@ -17,7 +17,6 @@
 ### 使用套件
 - `axios`
 - `Bootstrap 5`
-- `lodash`
 - `Font Awesome`、`Material icons`
 
 ## 作品簡介
