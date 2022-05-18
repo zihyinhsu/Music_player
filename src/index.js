@@ -8,7 +8,13 @@ import { getSongData, searchSong } from './assets/methods/getData';
 dom.tag.src = "https://www.youtube.com/iframe_api";
 dom.firstScriptTag.parentNode.insertBefore(dom.tag, dom.firstScriptTag);
 
-getSongData();
+// 如果localStorage裡面沒有東西，就有預設歌單
+if(dom.favorite.length === 0){
+  getSongData();
+} else {
+  variables.songsList = [];
+  variables.songsListId = [];
+}
 
 // 開始播放
 dom.play.addEventListener('click', () => {
@@ -173,19 +179,25 @@ dom.search.addEventListener('click', () => {
 });
 
 // 點擊搜尋播放
-dom.searchResults.addEventListener("click", (e) => {
-  if (e.target.nodeName === 'A') {
-    const songListIndex = Number(e.target.dataset.index);
-    variables.presentSongIndex = songListIndex;
-    variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
-    variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
-    variables.player.loadPlaylist(variables.songsListId, 0, 0);
-    showSongList()
-    // 歌曲成功插播至原歌單之後，就把 isSearch 關掉
-    variables.isSearch = false;
-    dom.searchResults.classList.add('d-none');
-  }
-});
+if(dom.inputInfo.value !== ''){
+  dom.searchResults.addEventListener("click", (e) => {
+    if (e.target.nodeName === 'A') {
+      const songListIndex = Number(e.target.dataset.index);
+      variables.presentSongIndex = songListIndex;
+      if(variables.songsListId.includes(variables.searchResult[e.target.dataset.index].id.videoId)){
+        return
+      } else {
+        variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
+        variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
+        variables.player.loadPlaylist(variables.songsListId, 0, 0);
+        showSongList()
+        // 歌曲成功插播至原歌單之後，就把 isSearch 關掉
+        variables.isSearch = false;
+        dom.searchResults.classList.add('d-none');
+      }
+    }
+  });
+}
 
 // 歌單滑入滑出
 dom.playListBtn.addEventListener('click', () => {

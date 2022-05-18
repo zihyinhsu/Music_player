@@ -24,6 +24,8 @@ const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
 const searchResults = document.querySelector('.searchResult');
 const songRepeatController = document.querySelector('.songRepeatController');
+const favorite = JSON.parse(localStorage.getItem('favorite')) || [];
+const favoriteId = JSON.parse(localStorage.getItem('favoriteId')) || [];
 
 export {
     tag,
@@ -51,7 +53,9 @@ export {
     songTitle,
     author,
     searchResults,
-    songRepeatController
+    songRepeatController,
+    favorite,
+    favoriteId
 };
 
 // variables
@@ -64,18 +68,18 @@ let searchResultId = [];
 let songListLi = [];
 let songTitleArr = [];
 let songAuthorArr = [];
+let deleteSong = null;
 let currentPlaySongId = null;
 let repeatList = true;
 let signSongRepeat = true;
 let isRadomSong = false;
+let isSearch = false;
+let playListLoopPlay = false;
 let currentTime = 0;
 let durationTime = 0;
 let songListLength = 0;
 let presentSongIndex = 0;
-let isSearch = false;
 let songControlCounter = 0;
-let playListLoopPlay = false;
-let deleteSong = null;
 
 export default{
     player,

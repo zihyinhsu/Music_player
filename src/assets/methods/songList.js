@@ -58,7 +58,6 @@ function deleteSong(){
       variables.songsList.splice(e.target.dataset.index,1);
       variables.songsListId.splice(e.target.dataset.index,1);
       showSongList();
-      console.log(e.target)
     })
   })
 }
@@ -70,15 +69,15 @@ export function showSearchSongList() {
     variables.searchResultId = [];
     variables.searchResult.forEach((i,index) => {
       if(i.id.videoId === undefined){
-        variables.searchResult.splice(index,1)
+        variables.searchResult.splice(index,1);
       }
     });
     variables.searchResult.forEach((i,index)=>{
       result += `<li draggable="true" class="col-md-4 mb-3">
       <a class="searchResultItem d-flex justify-content-md-between align-items-center" href="#" data-index=${index} data-vid=${i.id.videoId}>
-        <div class="d-flex align-items-center w-100 w-md-75 p-4 pointEvents">
+        <div class="d-flex justify-content-between align-items-center w-100 p-4 pointEvents">
           <img class="me-4" src="${i.snippet.thumbnails.high.url}" style="height: 60px;width: 60px;">
-          <div class="w-70 w-md-90">
+          <div class="text-truncate me-md-2">
             <div class="text-truncate">${i.snippet.title}</div>
             <div class="text-truncate">${i.snippet.channelTitle}</div>
           </div>
@@ -115,10 +114,10 @@ export function songListSort(){
   variables.songsList.forEach((i, index) => {
   if (i.snippet.resourceId.videoId !== undefined) {
     const songIndex = variables.songsListId.indexOf(i.snippet.resourceId.videoId);
-    shuffle.splice(songIndex, 0, variables.songsList[index])
+    shuffle.splice(songIndex, 0, variables.songsList[index]);
   } else {
     const songIndex = variables.songsListId.indexOf(i.id.videoId);
-    shuffle.splice(songIndex, 0, variables.songsList[index])
+    shuffle.splice(songIndex, 0, variables.songsList[index]);
   }  
 });
 variables.songsList = shuffle ;
@@ -127,3 +126,8 @@ showSongImg();
 showSongInfo();
 addOrRemoveMusicPlaying();
 };
+
+// localStorage
+// window.addEventListener('storage', () => {
+  
+// });
