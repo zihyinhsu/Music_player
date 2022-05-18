@@ -80,9 +80,16 @@ export function setPlayer(){
   
   // 取得歌曲資料 - 自訂歌單
   export  function getSongData() {
-    axios.get('https://mighty-eyrie-61795.herokuapp.com/')
+    axios.get('https://obscure-dawn-53119.herokuapp.com/youtube/playListItems',
+    {
+      params: {
+      part: "snippet,contentDetails", // 必填，把需要的資訊列出來
+      playlistId: 'PL5NDQ4Fnj_BzeO1zSQ4WW62uTik5XZyzQ', // 播放清單的id
+      maxResults: 20, // 預設為五筆資料，可以設定1~50
+    }
+  })
       .then(res => {
-        variables.songsList = res.data.items; 
+        variables.songsList = res.data[0].items; 
         showSongList();
         showSongImg();
         showSongInfo();
@@ -104,16 +111,15 @@ export function setPlayer(){
   
   // 搜尋功能
   export function searchSong() {
-    axios.get("https://www.googleapis.com/youtube/v3/search", {
+    axios.get("https://obscure-dawn-53119.herokuapp.com/youtube/search", {
       params: {
         part: "snippet", // 必填，把需要的資訊列出來
         maxResults: 20, // 預設為五筆資料，可以設定1~50
         q: `${dom.inputInfo.value}`,
-        key: process.env.KEY
       }
     })
     .then((res) => {
-      variables.searchResult = res.data.items;
+      variables.searchResult = res.data[0].items;
       showSearchSongList();
       })
     .catch((err) => {
