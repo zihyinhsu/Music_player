@@ -29,8 +29,8 @@ export function showSongList() {
       <div class="mx-2 ms-md-0 text-truncate w-25 w-md-auto pointEvents">
       ${i.snippet?.videoOwnerChannelTitle || i.snippet.channelTitle}
       </div>
-      <span class="deleteSong me-md-5" data-index=${index}>
-        <i class="fa-solid fa-trash-can"></i>
+      <span class="deleteSong me-md-5">
+        <i class="fa-solid fa-trash-can" data-index=${index}></i>
       </span> 
     </a>
     </li>`;
@@ -58,6 +58,7 @@ function deleteSong(){
       variables.songsList.splice(e.target.dataset.index,1);
       variables.songsListId.splice(e.target.dataset.index,1);
       showSongList();
+      console.log(e.target)
     })
   })
 }
