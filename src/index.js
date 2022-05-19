@@ -3,17 +3,17 @@ import variables, * as dom from './assets/methods/dom';
 import { mouseControl } from './assets/methods/progressBar';
 import { showSongImg, showSongInfo } from './assets/methods/songsInfo';
 import { songListSort, showSongList } from './assets/methods/songList';
-import { getSongData, searchSong } from './assets/methods/getData';
+import { getSongData, searchSong, loadSongData} from './assets/methods/getData';
 
 dom.tag.src = "https://www.youtube.com/iframe_api";
 dom.firstScriptTag.parentNode.insertBefore(dom.tag, dom.firstScriptTag);
 
 // 如果localStorage裡面沒有東西，就有預設歌單
-if(dom.favorite.length === 0){
+const storageSongsData = JSON.parse(localStorage.getItem('songs'));
+if(storageSongsData === null){
   getSongData();
 } else {
-  variables.songsList = [];
-  variables.songsListId = [];
+  loadSongData(storageSongsData);
 }
 
 // 開始播放
@@ -131,6 +131,7 @@ dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
+  e.preventDefault();
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
     dom.playListBtn.click();
     let newSongsListId = [];
@@ -140,15 +141,16 @@ dom.playlists.addEventListener("click", (e) => {
     titles.forEach((item) => {
       newSongQueue.push(item.innerText);
     });
+    
     let indexQueue = [];
     variables.songsList.forEach((item) => {
       const index = newSongQueue.indexOf(item.snippet.title);
       indexQueue.push(index)
     });
     indexQueue.forEach((item)=>{
-      if(variables.songsList[item].id.videoId){
+      if(variables.songsList[item].id?.videoId !== undefined){
         newSongsListId.push(variables.songsList[item].id.videoId);
-      }else{
+      }else {
         newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
       }
       newSongsList.push(variables.songsList[item]);
@@ -203,3 +205,4 @@ dom.playListBtn.addEventListener('click', () => {
   dom.playlists.classList.toggle('end-n100');
   dom.playlists.classList.toggle('end-0');
 });
+

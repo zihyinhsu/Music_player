@@ -46,9 +46,9 @@ export function setPlayer(){
       variables.presentSongIndex = variables.player.getPlaylistIndex();
       }
     if(e.data == YT.PlayerState.CUED){
-      variables.songsListId = variables.player.getPlaylist();
       getBar();
     } else if (e.data == YT.PlayerState.PLAYING) {
+      variables.songsListId = variables.player.getPlaylist();
       songIdMatchIndex();
       getSongDurationTime();
       getSongCurrentTime();
@@ -95,9 +95,28 @@ export function setPlayer(){
         init();
       }).catch(err => console.log(err))
   }
+
+  export function loadSongData(data) {
+    variables.songsList = data;
+    console.log(variables.songsList)
+    let listId = [];
+    variables.songsList.forEach((item) => {
+      if (item.id?.videoId !== undefined) {
+        listId.push(item.id.videoId)
+      } else {
+        listId.push(item.snippet.resourceId.videoId)
+      }
+    })
+    variables.songsListId = listId;
+    showSongList();
+    showSongImg();
+    showSongInfo();
+    setTimeout(() => {init();},500)
+    
+  }
   
   // 初次自動載入
-  export  function init(){
+  export function init(){
     dom.pause.classList.add('d-none');
     dom.volume.classList.add('d-none');
     dom.searchResults.classList.add('d-none');

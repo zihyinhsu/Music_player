@@ -80,6 +80,7 @@ let durationTime = 0;
 let songListLength = 0;
 let presentSongIndex = 0;
 let songControlCounter = 0;
+let storageSongs = ''
 
 export default{
     player,
@@ -102,5 +103,6 @@ export default{
     isSearch,
     songControlCounter,
     playListLoopPlay,
-    deleteSong
+    deleteSong,
+    storageSongs
 }
