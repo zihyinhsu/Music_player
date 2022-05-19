@@ -131,6 +131,7 @@ dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none
 
 // 點擊歌單播放
 dom.playlists.addEventListener("click", (e) => {
+  e.preventDefault();
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
     dom.playListBtn.click();
     let newSongsListId = [];

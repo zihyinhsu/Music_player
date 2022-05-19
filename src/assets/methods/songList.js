@@ -36,7 +36,7 @@ export function showSongList() {
     </li>`;
   });
   result += `<li>
-              <a class="songList w-100 p-2 text-truncate storageSongs" href="#">
+              <a class="songList d-block text-center w-100 p-2 text-truncate mx-auto storageSongs" href="#">
                 儲存歌曲清單
               </a>
             </li>`
