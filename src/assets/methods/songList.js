@@ -19,7 +19,7 @@ export function showSongList() {
   variables.songsList.forEach((i, index) => {
     const dataProperty = `data-index=${index} data-vid=${i.snippet.resourceId?.videoId || i.id.videoId}`;
     result += `<li draggable="true">
-    <a class="songList d-flex justify-content-md-between align-items-center" 
+    <a class="songList d-flex justify-content-md-between align-items-center"
     ${dataProperty} href="#">
       <div class="d-flex align-items-center w-65 pointEvents">
         <div class="px-2 px-md-3 pointEvents">${index + 1}</div> 
@@ -35,20 +35,29 @@ export function showSongList() {
     </a>
     </li>`;
   });
+  result += `<li>
+              <a class="songList w-100 p-2 text-truncate storageSongs" href="#">
+                儲存歌曲清單
+              </a>
+            </li>`
   dom.playlists.innerHTML = result;
-  variables.songListLi = document.querySelectorAll(".songList");
+  variables.songListLi = document.querySelectorAll('.songList');
   variables.deleteSong = document.querySelectorAll('.deleteSong');
-  variables.songListLi.forEach((i) => {
+  variables.storageSongs = document.querySelector('.storageSongs')
+  variables.songListLi.forEach((i, index) => {
     i.setAttribute('data-disabled', true);
     i.setAttribute('style', 'cursor: not-allowed;');
     setTimeout(() => {
-      i.setAttribute('data-disabled', false);
+      if (variables.songListLi.length -1 > index) {
+        i.setAttribute('data-disabled', false);
+      }
       i.removeAttribute('style', 'cursor: not-allowed;');
     },300);
   })
   variables.songListLength = variables.songListLi.length;
   watchPlaylistForDragAndDrop();
   deleteSong();
+  storageSongs();
 }
 
 // 刪除歌單
@@ -59,6 +68,13 @@ function deleteSong(){
       variables.songsListId.splice(e.target.dataset.index,1);
       showSongList();
     })
+  })
+}
+
+// 儲存歌單
+function storageSongs(){
+  variables.storageSongs.addEventListener('click' , (e)=>{
+    localStorage.setItem('songs', JSON.stringify(variables.songsList))
   })
 }
 
@@ -126,6 +142,7 @@ showSongImg();
 showSongInfo();
 addOrRemoveMusicPlaying();
 };
+
 
 // localStorage
 // window.addEventListener('storage', () => {
