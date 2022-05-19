@@ -1,17 +1,16 @@
 import variables,* as dom from './dom';
-var _ = require('lodash');
 import { watchPlaylistForDragAndDrop } from  './dargAndDrop';
 
 // 在播放狀態自動對照id與presentSongIndex
 export function songIdMatchIndex() {
   variables.songsList.forEach((i, index) => {
-      if (i.snippet.resourceId?.videoId === variables.player.getVideoData().video_id) {
-        variables.presentSongIndex = index
-      } else if (i.id.videoId === variables.player.getVideoData().video_id) {
-        variables.presentSongIndex = index
-      }
-    })
-}
+    if (i.snippet.resourceId?.videoId === variables.player.getVideoData().video_id) {
+      variables.presentSongIndex = index
+    } else if (i.id.videoId === variables.player.getVideoData().video_id) {
+      variables.presentSongIndex = index
+    };
+  });
+};
 
 // 顯示歌單
 export function showSongList() {
@@ -35,30 +34,22 @@ export function showSongList() {
     </a>
     </li>`;
   });
-  result += `<li>
-              <a class="songList d-block text-center w-100 p-2 text-truncate mx-auto storageSongs" href="#">
-                儲存歌曲清單
-              </a>
-            </li>`
   dom.playlists.innerHTML = result;
   variables.songListLi = document.querySelectorAll('.songList');
   variables.deleteSong = document.querySelectorAll('.deleteSong');
-  variables.storageSongs = document.querySelector('.storageSongs')
-  variables.songListLi.forEach((i, index) => {
+  variables.songListLi.forEach((i) => {
     i.setAttribute('data-disabled', true);
     i.setAttribute('style', 'cursor: not-allowed;');
     setTimeout(() => {
-      if (variables.songListLi.length -1 > index) {
-        i.setAttribute('data-disabled', false);
-      }
+      i.setAttribute('data-disabled', false);
       i.removeAttribute('style', 'cursor: not-allowed;');
     },300);
-  })
+  });
   variables.songListLength = variables.songListLi.length;
   watchPlaylistForDragAndDrop();
   deleteSong();
   storageSongs();
-}
+};
 
 // 刪除歌單
 function deleteSong(){
@@ -67,16 +58,17 @@ function deleteSong(){
       variables.songsList.splice(e.target.dataset.index,1);
       variables.songsListId.splice(e.target.dataset.index,1);
       showSongList();
-    })
-  })
-}
+      storageSongs();
+      variables.player.loadPlaylist(variables.songsListId, variables.presentSongIndex,0);
+    });
+  });
+};
 
 // 儲存歌單
 function storageSongs(){
-  variables.storageSongs.addEventListener('click' , (e)=>{
-    localStorage.setItem('songs', JSON.stringify(variables.songsList))
-  })
-}
+  localStorage.setItem('songs', JSON.stringify(variables.songsList));
+  localStorage.setItem('songsId', JSON.stringify(variables.songsListId));
+};
 
 // 顯示搜尋歌單
 export function showSearchSongList() {
@@ -93,7 +85,7 @@ export function showSearchSongList() {
       <a class="searchResultItem d-flex justify-content-md-between align-items-center" href="#" data-index=${index} data-vid=${i.id.videoId}>
         <div class="d-flex align-items-center w-100 p-4 pointEvents">
           <img class="me-4" src="${i.snippet.thumbnails.high.url}" style="height: 60px;width: 60px;">
-          <div class="text-truncate w-100 me-md-2">
+          <div class="text-truncate w-100 me-2">
             <div class="text-truncate">${i.snippet.title}</div>
             <div class="text-truncate">${i.snippet.channelTitle}</div>
           </div>
@@ -103,30 +95,30 @@ export function showSearchSongList() {
       </li>`
       variables.searchResultId.push(i.id.videoId)
     })
-    dom.searchResults.innerHTML = `<div class="container"><h4 class="text-white mx-3 my-4">熱門搜尋結果</h4>
+    dom.searchResults.innerHTML = `<div class="container"><h4 class="text-white my-4">熱門搜尋結果</h4>
     <div class="row d-flex align-items-center">${result}</div></div>`;
     dom.searchResults.classList.remove('d-none');
     variables.player.loadPlaylist(variables.searchResultId, 2, 0);
     setTimeout(() => {
       variables.player.pauseVideo();
     }, 500);
-  }
-}
+  };
+};
 
 // 增加播放中focus效果，不是播放中則移除。
 export function addOrRemoveMusicPlaying(dataList = variables.songListLi) {
-dataList.forEach((i,index) => {
-  if (Number(i.dataset.index) === variables.presentSongIndex) {
-    dataList[index].classList.add('musicPlaying');
-  } else {
-    dataList[index].classList.remove('musicPlaying');
-  }
-})
-}
+  dataList.forEach((i,index) => {
+    if (Number(i.dataset.index) === variables.presentSongIndex) {
+      dataList[index].classList.add('musicPlaying');
+    } else {
+      dataList[index].classList.remove('musicPlaying');
+    };
+  });
+};
 
 // 歌單重新排序
 export function songListSort(){
-  let shuffle = []
+  let shuffle = [];
   variables.songsList.forEach((i, index) => {
   if (i.snippet.resourceId.videoId !== undefined) {
     const songIndex = variables.songsListId.indexOf(i.snippet.resourceId.videoId);
@@ -134,7 +126,7 @@ export function songListSort(){
   } else {
     const songIndex = variables.songsListId.indexOf(i.id.videoId);
     shuffle.splice(songIndex, 0, variables.songsList[index]);
-  }  
+  };
 });
 variables.songsList = shuffle ;
 showSongList();
@@ -142,9 +134,3 @@ showSongImg();
 showSongInfo();
 addOrRemoveMusicPlaying();
 };
-
-
-// localStorage
-// window.addEventListener('storage', () => {
-  
-// });

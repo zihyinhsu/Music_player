@@ -17,21 +17,42 @@
 ### 使用套件
 - `axios`
 - `Bootstrap 5`
-- `Font Awesome`、`Material icons`
+- `Font Awesome`
 
 ## 作品簡介
 ### 基本介面
 ![](https://i.imgur.com/KFPhXQc.jpg)
 
-### 預設滑動歌單 by ZY
+### By ZY
+- 畫面切版
+- 歌曲名稱跑馬燈效果
+- 歌單滑入效果
+- 歌曲圖片、歌名切換
+- 操控音量條功能
 
 ![](https://i.imgur.com/W4is2uz.png)
 
-### 搜尋 與 加入 / 刪除歌單
-![](https://i.imgur.com/l9n0Fr4.png)
-
-### 歌單拖曳功能 by 群嘉
+### By 群嘉
+- 歌單拖曳功能
+- 播放歌曲時間轉換、手刻進度條
+- 亂數播放功能
+- 從 Heroku 取得 Youtube 資料
 
 ![](https://i.imgur.com/D3mTX8K.png)
 
+### ZY、群嘉共寫 
+- 歌單切換
+- 搜尋歌曲功能
+- 用 localStorage 儲存、新增與刪除歌單
+- 切換播放模式 ( 單曲循環、歌單循環 )
+
+![](https://i.imgur.com/h5CXH7b.png)
+
+### By Steve
+- 後端使用 Heroku 作為中轉站，隱藏機敏資訊。 
+- 後台 Heroku 設定
+
+### By Natsu
+- 負責 UI / UX 設計
+-  [Figma 設計稿](https://www.figma.com/file/MGtcN2lD93MJH4g1WfR1Av/%E9%9F%B3%E6%A8%82%E6%92%AD%E6%94%BE%E5%99%A8%E9%9A%8E%E6%AE%B5%E4%B8%80)
 

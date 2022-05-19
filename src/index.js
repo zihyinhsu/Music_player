@@ -9,26 +9,26 @@ dom.tag.src = "https://www.youtube.com/iframe_api";
 dom.firstScriptTag.parentNode.insertBefore(dom.tag, dom.firstScriptTag);
 
 // 如果localStorage裡面沒有東西，就有預設歌單
-const storageSongsData = JSON.parse(localStorage.getItem('songs'));
-if(storageSongsData === null){
+if(dom.storageSongsData.length === 0){
   getSongData();
 } else {
-  loadSongData(storageSongsData);
-}
+  loadSongData(dom.storageSongsData);
+};
 
 // 開始播放
-dom.play.addEventListener('click', () => {
+dom.play.addEventListener('click', (e) => {
+  loadPlaylist(e);
   variables.player.playVideo();
   dom.play.classList.add('d-none');
   dom.pause.classList.remove('d-none');
-})
+});
 
 // 暫停歌曲
 dom.pause.addEventListener('click', () => {
   variables.player.pauseVideo();
   dom.pause.classList.add('d-none');
   dom.play.classList.remove('d-none');
-})
+});
 
 // 上一首
 dom.previous.addEventListener("click", () => {
@@ -97,7 +97,7 @@ dom.songRepeatController.addEventListener('click', () => {
       dom.repeat.classList.remove('d-none');
       variables.player.loadPlaylist([variables.currentPlaySongId], variables.presentSongIndex);
       break;
-  }
+  };
 });
 
 // 快進10秒
@@ -133,43 +133,9 @@ dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none
 dom.playlists.addEventListener("click", (e) => {
   e.preventDefault();
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
+    loadPlaylist(e);
     dom.playListBtn.click();
-    let newSongsListId = [];
-    let newSongQueue = [];
-    let newSongsList = [];
-    const titles = document.querySelectorAll('.title')
-    titles.forEach((item) => {
-      newSongQueue.push(item.innerText);
-    });
-    
-    let indexQueue = [];
-    variables.songsList.forEach((item) => {
-      const index = newSongQueue.indexOf(item.snippet.title);
-      indexQueue.push(index)
-    });
-    indexQueue.forEach((item)=>{
-      if(variables.songsList[item].id?.videoId !== undefined){
-        newSongsListId.push(variables.songsList[item].id.videoId);
-      }else {
-        newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
-      }
-      newSongsList.push(variables.songsList[item]);
-    })
-    variables.songsList = newSongsList;
-    variables.songsListId = newSongsListId;
-    showSongList();
-    showSongImg();
-    const songListIndex = Number(e.target.dataset.index);
-    variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-    setTimeout(()=>{
-      variables.player.pauseVideo()
-    }, 300);
-    setTimeout(() => {
-      variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-    }, 800);
-    variables.isSearch = false;
-    dom.searchResults.classList.add('d-none');
-  }
+  };
 });
 
 dom.search.addEventListener('click', () => {
@@ -178,7 +144,7 @@ dom.search.addEventListener('click', () => {
   } else {
     searchSong();
     variables.isSearch = true;
-  }
+  };
 });
 
 // 點擊搜尋播放
@@ -192,12 +158,12 @@ dom.searchResults.addEventListener("click", (e) => {
       variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
       variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
       variables.player.loadPlaylist(variables.songsListId, 0, 0);
-      showSongList()
+      showSongList();
       // 歌曲成功插播至原歌單之後，就把 isSearch 關掉
       variables.isSearch = false;
       dom.searchResults.classList.add('d-none');
-    }
-  }
+    };
+  };
 });
 
 // 歌單滑入滑出
@@ -206,3 +172,43 @@ dom.playListBtn.addEventListener('click', () => {
   dom.playlists.classList.toggle('end-0');
 });
 
+// 調換歌單順序之後重新 load
+function loadPlaylist(e){
+  let newSongsListId = [];
+  let newSongQueue = [];
+  let newSongsList = [];
+  const titles = document.querySelectorAll('.title')
+  titles.forEach((item) => {
+    newSongQueue.push(item.innerText);
+  });
+  
+  let indexQueue = [];
+  variables.songsList.forEach((item) => {
+    item.snippet.title = item.snippet.title.split("&#39;").join("'");
+    item.snippet.title = item.snippet.title.split('&quot;').join('"');
+    const index = newSongQueue.indexOf(item.snippet.title);
+    indexQueue.push(index)
+  });
+  indexQueue.forEach((item)=>{
+    if(variables.songsList[item].id?.videoId !== undefined){
+      newSongsListId.push(variables.songsList[item].id.videoId);
+    }else {
+      newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
+    }
+    newSongsList.push(variables.songsList[item]);
+  })
+  variables.songsList = newSongsList;
+  variables.songsListId = newSongsListId;
+  showSongList();
+  showSongImg();
+  const songListIndex = Number(e.target.dataset.index);
+  variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+  setTimeout(()=>{
+    variables.player.pauseVideo();
+  }, 300);
+  setTimeout(() => {
+    variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+  }, 800);
+  variables.isSearch = false;
+  dom.searchResults.classList.add('d-none');
+}

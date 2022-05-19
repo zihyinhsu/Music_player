@@ -24,8 +24,8 @@ const songTitle = document.querySelector('.songTitle');
 const author = document.querySelector('.author');
 const searchResults = document.querySelector('.searchResult');
 const songRepeatController = document.querySelector('.songRepeatController');
-const favorite = JSON.parse(localStorage.getItem('favorite')) || [];
-const favoriteId = JSON.parse(localStorage.getItem('favoriteId')) || [];
+const storageSongsData = JSON.parse(localStorage.getItem('songs')) || [];
+const storageSongsDataId = JSON.parse(localStorage.getItem('songsId')) || [];
 
 export {
     tag,
@@ -54,8 +54,8 @@ export {
     author,
     searchResults,
     songRepeatController,
-    favorite,
-    favoriteId
+    storageSongsData,
+    storageSongsDataId
 };
 
 // variables
@@ -80,7 +80,6 @@ let durationTime = 0;
 let songListLength = 0;
 let presentSongIndex = 0;
 let songControlCounter = 0;
-let storageSongs = ''
 
 export default{
     player,
@@ -104,5 +103,4 @@ export default{
     songControlCounter,
     playListLoopPlay,
     deleteSong,
-    storageSongs
 }

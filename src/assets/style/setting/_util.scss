@@ -32,8 +32,8 @@
   .songList{
     color: $white;
     &:hover{
-      background-color: $light;
-      color: $dark;
+      background-color: rgba($white,0.3);
+      color: $white;
     }
   }
 }
