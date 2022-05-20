@@ -53,6 +53,8 @@ export function showSongImg(dataList = variables.songsList){
       };
     });
     // 轉換字串內的符號
+    let songTitle = variables.songTitleArr[variables.presentSongIndex].split("&#39;").join("'");
+    songTitle = songTitle.split('&quot;').join('"');
     dom.songTitle.textContent = variables.songTitleArr[variables.presentSongIndex];
     dom.author.textContent = variables.songAuthorArr[variables.presentSongIndex];
   }

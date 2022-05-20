@@ -80,6 +80,7 @@ let durationTime = 0;
 let songListLength = 0;
 let presentSongIndex = 0;
 let songControlCounter = 0;
+let isOpenPlayList = false;
 
 export default{
     player,
@@ -103,4 +104,5 @@ export default{
     songControlCounter,
     playListLoopPlay,
     deleteSong,
+    isOpenPlayList
 }

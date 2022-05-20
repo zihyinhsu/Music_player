@@ -79,9 +79,11 @@ export function showSearchSongList() {
     variables.searchResult.forEach((i,index) => {
       if(i.id.videoId === undefined){
         variables.searchResult.splice(index,1);
-      }
+      };
     });
     variables.searchResult.forEach((i,index)=>{
+      i.snippet.title = i.snippet.title.split("&#39;").join("'");
+      i.snippet.title = i.snippet.title.split('&quot;').join('"');
       result += `<li draggable="true" class="col-md-4 mb-3">
       <a class="searchResultItem d-flex justify-content-md-between align-items-center" href="#" data-index=${index} data-vid=${i.id.videoId}>
         <div class="d-flex align-items-center w-100 p-4 pointEvents">

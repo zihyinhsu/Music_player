@@ -5,6 +5,8 @@ import { showSongImg, showSongInfo } from './assets/methods/songsInfo';
 import { songListSort, showSongList, loadPlaylist } from './assets/methods/songList';
 import { getSongData, searchSong, loadSongData} from './assets/methods/getData';
 
+
+
 dom.tag.src = "https://www.youtube.com/iframe_api";
 dom.firstScriptTag.parentNode.insertBefore(dom.tag, dom.firstScriptTag);
 
@@ -61,10 +63,11 @@ dom.random.addEventListener("click", () => {
   }
 });
 
+let controlNum ;
 // 歌曲播放循環控制
 dom.songRepeatController.addEventListener('click', () => {
   variables.songControlCounter++;
-  const controlNum = variables.songControlCounter % 3;
+  controlNum = variables.songControlCounter % 3;
   switch (controlNum) {
     // 取消全歌循環
     case 0:
@@ -135,6 +138,28 @@ dom.playlists.addEventListener("click", (e) => {
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
     loadPlaylist(e, true);
     dom.playListBtn.click();
+    // 切換歌曲之後，歌曲循環狀態歸零
+    if(controlNum === 1){
+      dom.songRepeatController.click();
+      dom.songRepeatController.click();
+    } else if (controlNum === 2){
+      dom.songRepeatController.click();
+    }
+  };
+});
+
+// 觸發搜尋功能
+dom.inputInfo.addEventListener('keydown', (e)=>{
+  if (dom.inputInfo.value === '') {
+    dom.searchResults.classList.add('d-none');
+  } else {
+    if(e.keyCode == 13){
+      searchSong();
+      variables.isSearch = true;
+      if(variables.isOpenPlayList){
+        dom.playListBtn.click();
+      }
+    }
   };
 });
 
@@ -144,7 +169,10 @@ dom.search.addEventListener('click', () => {
   } else {
     searchSong();
     variables.isSearch = true;
-  };
+    if(variables.isOpenPlayList){
+      dom.playListBtn.click();
+    }
+  }
 });
 
 // 點擊搜尋播放
@@ -168,6 +196,10 @@ dom.searchResults.addEventListener("click", (e) => {
 
 // 歌單滑入滑出
 dom.playListBtn.addEventListener('click', () => {
+  variables.isOpenPlayList = !variables.isOpenPlayList
   dom.playlists.classList.toggle('end-n100');
   dom.playlists.classList.toggle('end-0');
 });
+
+
+
