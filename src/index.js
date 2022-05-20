@@ -3,7 +3,7 @@ import variables, * as dom from './assets/methods/dom';
 import { mouseControl } from './assets/methods/progressBar';
 import { showSongImg, showSongInfo } from './assets/methods/songsInfo';
 import { songListSort, showSongList } from './assets/methods/songList';
-import { getSongData, searchSong, loadSongData} from './assets/methods/getData';
+import { getSongData, searchSong ,loadSongData } from './assets/methods/getData';
 
 dom.tag.src = "https://www.youtube.com/iframe_api";
 dom.firstScriptTag.parentNode.insertBefore(dom.tag, dom.firstScriptTag);
@@ -17,7 +17,7 @@ if(dom.storageSongsData.length === 0){
 
 // 開始播放
 dom.play.addEventListener('click', (e) => {
-  loadPlaylist(e);
+  loadPlaylist(e, false);
   variables.player.playVideo();
   dom.play.classList.add('d-none');
   dom.pause.classList.remove('d-none');
@@ -61,10 +61,11 @@ dom.random.addEventListener("click", () => {
   }
 });
 
+let controlNum ;
 // 歌曲播放循環控制
 dom.songRepeatController.addEventListener('click', () => {
   variables.songControlCounter++;
-  const controlNum = variables.songControlCounter % 3;
+  controlNum = variables.songControlCounter % 3;
   switch (controlNum) {
     // 取消全歌循環
     case 0:
@@ -133,8 +134,30 @@ dom.volume.addEventListener("mouseout", () => { dom.volume.classList.add('d-none
 dom.playlists.addEventListener("click", (e) => {
   e.preventDefault();
   if (e.target.nodeName === 'A' && e.target.dataset.disabled === 'false') {
-    loadPlaylist(e);
+    loadPlaylist(e, true);
     dom.playListBtn.click();
+    // 切換歌曲之後，歌曲循環狀態歸零
+    if(controlNum === 1){
+      dom.songRepeatController.click();
+      dom.songRepeatController.click();
+    } else if (controlNum === 2){
+      dom.songRepeatController.click();
+    }
+  };
+});
+
+// 觸發搜尋功能
+dom.inputInfo.addEventListener('keydown', (e)=>{
+  if (dom.inputInfo.value === '') {
+    dom.searchResults.classList.add('d-none');
+  } else {
+    if(e.keyCode == 13){
+      searchSong();
+      variables.isSearch = true;
+      if(variables.isOpenPlayList){
+        dom.playListBtn.click();
+      }
+    }
   };
 });
 
@@ -144,7 +167,7 @@ dom.search.addEventListener('click', () => {
   } else {
     searchSong();
     variables.isSearch = true;
-  };
+  }
 });
 
 // 點擊搜尋播放
@@ -168,12 +191,13 @@ dom.searchResults.addEventListener("click", (e) => {
 
 // 歌單滑入滑出
 dom.playListBtn.addEventListener('click', () => {
+  variables.isOpenPlayList = !variables.isOpenPlayList
   dom.playlists.classList.toggle('end-n100');
   dom.playlists.classList.toggle('end-0');
 });
 
 // 調換歌單順序之後重新 load
-function loadPlaylist(e){
+function loadPlaylist(e, fromList){
   let newSongsListId = [];
   let newSongQueue = [];
   let newSongsList = [];
@@ -184,31 +208,38 @@ function loadPlaylist(e){
   
   let indexQueue = [];
   variables.songsList.forEach((item) => {
+    // 轉換字串內的符號
     item.snippet.title = item.snippet.title.split("&#39;").join("'");
     item.snippet.title = item.snippet.title.split('&quot;').join('"');
     const index = newSongQueue.indexOf(item.snippet.title);
-    indexQueue.push(index)
+    indexQueue.push(index);
   });
   indexQueue.forEach((item)=>{
     if(variables.songsList[item].id?.videoId !== undefined){
       newSongsListId.push(variables.songsList[item].id.videoId);
     }else {
       newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
-    }
+    };
     newSongsList.push(variables.songsList[item]);
   })
   variables.songsList = newSongsList;
   variables.songsListId = newSongsListId;
   showSongList();
   showSongImg();
-  const songListIndex = Number(e.target.dataset.index);
-  variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-  setTimeout(()=>{
-    variables.player.pauseVideo();
-  }, 300);
-  setTimeout(() => {
+  if (fromList) {
+    const songListIndex = Number(e.target.dataset.index);
     variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
-  }, 800);
+    setTimeout(()=>{
+      variables.player.pauseVideo();
+    }, 300);
+    setTimeout(() => {
+      variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+    }, 800);
+  }else{
+    variables.player.loadPlaylist(newSongsListId, variables.currentPlaySongId, variables.currentTime);
+    setTimeout(()=>{
+    }, 300);
+  };
   variables.isSearch = false;
   dom.searchResults.classList.add('d-none');
-}
+};
