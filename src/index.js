@@ -167,6 +167,9 @@ dom.search.addEventListener('click', () => {
   } else {
     searchSong();
     variables.isSearch = true;
+    if(variables.isOpenPlayList){
+      dom.playListBtn.click();
+    }
   }
 });
 
