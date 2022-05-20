@@ -146,17 +146,3 @@ export function setPlayer(){
       console.log(err);
     });
   };
-
-// export function triggerSearch(e){
-//   if (dom.inputInfo.value === '') {
-//     dom.searchResults.classList.add('d-none');
-//   } else {
-//     if(e.keyCode == 13){
-//       searchSong();
-//       variables.isSearch = true;
-//       if(variables.isOpenPlayList){
-//         dom.playListBtn.click();
-//       }
-//     }
-//   };
-// }
