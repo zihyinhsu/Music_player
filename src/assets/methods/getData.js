@@ -140,7 +140,6 @@ export function setPlayer(){
     })
     .then((res) => {
       variables.searchResult = res.data[0].items;
-      console.log(variables.searchResult,'true')
       showSearchSongList();
       })
     .catch((err) => {
