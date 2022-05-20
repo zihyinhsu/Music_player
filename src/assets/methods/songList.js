@@ -1,5 +1,6 @@
 import variables,* as dom from './dom';
 import { watchPlaylistForDragAndDrop } from  './dargAndDrop';
+import { showSongImg, showSongInfo } from './songsInfo';
 
 // 在播放狀態自動對照id與presentSongIndex
 export function songIdMatchIndex() {
@@ -136,3 +137,50 @@ showSongImg();
 showSongInfo();
 addOrRemoveMusicPlaying();
 };
+
+// 調換歌單順序之後重新 load
+export function loadPlaylist(e, fromList){
+  let newSongsListId = [];
+  let newSongQueue = [];
+  let newSongsList = [];
+  const titles = document.querySelectorAll('.title')
+  titles.forEach((item) => {
+    newSongQueue.push(item.innerText);
+  });
+  
+  let indexQueue = [];
+  variables.songsList.forEach((item) => {
+    item.snippet.title = item.snippet.title.split("&#39;").join("'");
+    item.snippet.title = item.snippet.title.split('&quot;').join('"');
+    const index = newSongQueue.indexOf(item.snippet.title);
+    indexQueue.push(index)
+  });
+  indexQueue.forEach((item)=>{
+    if(variables.songsList[item].id?.videoId !== undefined){
+      newSongsListId.push(variables.songsList[item].id.videoId);
+    }else {
+      newSongsListId.push(variables.songsList[item].snippet.resourceId.videoId);
+    }
+    newSongsList.push(variables.songsList[item]);
+  })
+  variables.songsList = newSongsList;
+  variables.songsListId = newSongsListId;
+  showSongList();
+  showSongImg();
+  if (fromList) {
+    const songListIndex = Number(e.target.dataset.index);
+    variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+    setTimeout(()=>{
+      variables.player.pauseVideo();
+    }, 300);
+    setTimeout(() => {
+      variables.player.loadPlaylist(newSongsListId, songListIndex, 0);
+    }, 800);
+  } else {
+    variables.player.loadPlaylist(newSongsListId, variables.currentPlaySongId, variables.currentTime);
+    setTimeout(()=>{
+    }, 300);
+  }
+  variables.isSearch = false;
+  dom.searchResults.classList.add('d-none');
+}
