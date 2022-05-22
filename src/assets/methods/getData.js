@@ -124,7 +124,7 @@ export function setPlayer(){
     dom.searchResults.classList.add('d-none');
     dom.repeat.classList.add('d-none');
     const id = variables.songListLi[0].dataset.vid;
-    setPlayer();
+    setPlayer(id);
     // 歌單drag and drop
     watchPlaylistForDragAndDrop();
   }
