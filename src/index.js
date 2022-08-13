@@ -181,7 +181,8 @@ dom.searchResults.addEventListener("click", (e) => {
     const songListIndex = Number(e.target.dataset.index);
     variables.presentSongIndex = songListIndex;
     if(variables.songsListId.includes(variables.searchResult[e.target.dataset.index].id.videoId)){
-      return
+      alert('已存在你的歌單裡(〃∀〃)')
+      
     } else {
       variables.songsList.unshift(variables.searchResult[e.target.dataset.index]);
       variables.songsListId.unshift(variables.searchResult[e.target.dataset.index].id.videoId);
@@ -211,7 +212,6 @@ function fullScreen (element){
   !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
     if (element.requestFullscreen) {
       element.requestFullscreen();
-      console.log(element)
     } else if (element.msRequestFullscreen) {
       element.msRequestFullscreen();
     } else if (element.mozRequestFullScreen) {
