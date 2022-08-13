@@ -21,12 +21,12 @@ export function showSongList() {
     result += `<li draggable="true">
     <a class="songList d-flex justify-content-md-between align-items-center"
     ${dataProperty} href="#">
-      <div class="d-flex align-items-center w-65 pointEvents">
-        <div class="px-2 px-md-3 pointEvents">${index + 1}</div> 
+      <div class="d-flex align-items-center w-65 pointEvents-none">
+        <div class="px-2 px-md-3 pointEvents-none">${index + 1}</div> 
         <img class="albumImg p-2" src="${i.snippet.thumbnails.high.url}">
-        <div class="title p-2 text-truncate pointEvents">${i.snippet.title}</div>
+        <div class="title p-2 text-truncate pointEvents-none">${i.snippet.title}</div>
       </div>
-      <div class="mx-2 ms-md-0 text-truncate w-25 w-md-auto pointEvents">
+      <div class="mx-2 ms-md-0 text-truncate w-25 w-md-auto pointEvents-none">
       ${i.snippet?.videoOwnerChannelTitle || i.snippet.channelTitle}
       </div>
       <span class="deleteSong me-md-5">

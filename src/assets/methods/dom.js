@@ -1,3 +1,4 @@
+const fullScreen = document.querySelector(".fullScreen");
 const tag = document.createElement("script");
 const cdPlayerImg = document.querySelector(".cdPlayer img");
 const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -28,6 +29,7 @@ const storageSongsData = JSON.parse(localStorage.getItem('songs')) || [];
 const storageSongsDataId = JSON.parse(localStorage.getItem('songsId')) || [];
 
 export {
+    fullScreen,
     tag,
     firstScriptTag,
     cdPlayerImg,

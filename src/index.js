@@ -201,5 +201,23 @@ dom.playListBtn.addEventListener('click', () => {
   dom.playlists.classList.toggle('end-0');
 });
 
+// 全螢幕功能
+dom.fullScreen.addEventListener("click",()=>{
+  fullScreen(document.getElementById('player'))
+});
 
-
+function fullScreen (element){
+  if (!document.fullscreenElement &&    // alternative standard method
+  !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+      console.log(element)
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+    } 
+}
