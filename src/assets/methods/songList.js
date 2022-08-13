@@ -86,13 +86,13 @@ export function showSearchSongList() {
       i.snippet.title = i.snippet.title.split('&quot;').join('"');
       result += `<li draggable="true" class="col-md-4 mb-3">
       <a class="searchResultItem d-flex justify-content-md-between align-items-center" href="#" data-index=${index} data-vid=${i.id.videoId}>
-        <div class="d-flex align-items-center w-100 p-4 pointEvents">
+        <div class="d-flex align-items-center w-100 p-4 pointEvents" data-index=${index} data-vid=${i.id.videoId}>
           <img class="me-4" src="${i.snippet.thumbnails.high.url}" style="height: 60px;width: 60px;">
-          <div class="text-truncate w-100 me-2">
-            <div class="text-truncate">${i.snippet.title}</div>
-            <div class="text-truncate">${i.snippet.channelTitle}</div>
+          <div class="text-truncate w-100 me-2" data-index=${index} data-vid=${i.id.videoId}>
+            <div class="text-truncate" data-index=${index} data-vid=${i.id.videoId}>${i.snippet.title}</div>
+            <div class="text-truncate" data-index=${index} data-vid=${i.id.videoId}>${i.snippet.channelTitle}</div>
           </div>
-          <i class="fa-solid fa-circle-plus"></i>
+          <i class="fa-solid fa-circle-plus" data-index=${index} data-vid=${i.id.videoId}></i>
         </div>
       </a>
       </li>`

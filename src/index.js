@@ -177,7 +177,7 @@ dom.search.addEventListener('click', () => {
 
 // 點擊搜尋播放
 dom.searchResults.addEventListener("click", (e) => {
-  if (e.target.nodeName === 'A') {
+  if (e.target.nodeName === 'A' || e.target.nodeName === 'DIV' || e.target.nodeName === 'I') {
     const songListIndex = Number(e.target.dataset.index);
     variables.presentSongIndex = songListIndex;
     if(variables.songsListId.includes(variables.searchResult[e.target.dataset.index].id.videoId)){
@@ -217,7 +217,7 @@ function fullScreen (element){
     } else if (element.mozRequestFullScreen) {
       element.mozRequestFullScreen();
     } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      element.webkitRequestFullscreen();
     }
     } 
 }
